@@ -7,7 +7,6 @@ import { fetchAllTutorial, dispatchAllTutorial } from '../../../redux/actions/tu
 import ReactPlayer from 'react-player';
 
 export default function CoursesDetail() {
-
     const tutorialsUsers = useSelector(state => state.tutorials)
     const auth = useSelector((state) => state.auth);
     const token = useSelector(state => state.token)
@@ -18,7 +17,7 @@ export default function CoursesDetail() {
     const { tokenUser } = token
     const { coursesUser } = couses
     const { tutorialsUser } = tutorialsUsers
-    
+
     const { user } = auth;
     const [objCourses, setObjCourses] = useState({})
     const [check, setCheck] = useState(true)
@@ -31,7 +30,6 @@ export default function CoursesDetail() {
     // const { id } = useParams()
     const dispatch = useDispatch()
 
-
     const getObj = async () => {
         const obj = await tutorialsUser.find(e => e.linkName === name)
         for (let item = 0; item < coursesUser.length; item++) {
@@ -40,9 +38,9 @@ export default function CoursesDetail() {
                 history.push({
                     pathname: `/learning/${name}`,
                     search: `?id=${coursesUser[item]._id}`,
-                  })
-                  const paramCourse = new URLSearchParams(window.location.search)
-                  setParamId(paramCourse.get('id'))
+                })
+                const paramCourse = new URLSearchParams(window.location.search)
+                setParamId(paramCourse.get('id'))
                 break
             }
         }
@@ -52,29 +50,28 @@ export default function CoursesDetail() {
         fetchAllTutorial().then(res => dispatch(dispatchAllTutorial(res)))
     }, [dispatch])
     useEffect(() => {
-            setObjCourses({})
-            getObj()
-    },[coursesUser, date])
+        setObjCourses({})
+        getObj()
+    }, [coursesUser, date])
     useEffect(() => {
         if (tokenUser) {
             fetchAllCoursesUser(tokenUser, modal?._id).then(res => dispatch(dispatchAllCoursesUser(res)))
         }
-
     }, [tokenUser, dispatch, modal])
 
     const handleChangeCourses = (id) => {
         const courseItem = coursesUser.find(e => e._id === id)
         setObjCourses(courseItem)
     }
-    const handleCheckDone = async ()=>{
-        if(!check){
+    const handleCheckDone = async () => {
+        if (!check) {
             setCheck(true)
         }
         console.log(check)
-        if(check){
+        if (check) {
             try {
-                await axios.put(`/user/done_courses/${paramId}`,{}, {headers: {authorization: tokenUser }})
-                window.location.href ='learning/Bi-kip-luyen-vo-than-chuong'
+                await axios.put(`/user/done_courses/${paramId}`, {}, { headers: { authorization: tokenUser } })
+                window.location.href = 'learning/Bi-kip-luyen-vo-than-chuong'
             } catch (error) {
                 console.log(error)
             }
@@ -87,7 +84,7 @@ export default function CoursesDetail() {
     const handleComment = async (e) => {
         e.preventDefault()
         try {
-            const res = await axios.post(`/user/comment_tutorial/${name}`, { text: textComment}, { headers: { Authorization: tokenUser } })
+            const res = await axios.post(`/user/comment_tutorial/${name}`, { text: textComment }, { headers: { Authorization: tokenUser } })
             setTextComment('')
             getObj()
             setDate(Date.now())
@@ -96,6 +93,7 @@ export default function CoursesDetail() {
             console.log(error);
         }
     }
+
     console.log(coursesUser)
     return (
         <div>
@@ -119,7 +117,7 @@ export default function CoursesDetail() {
                             />
                             <div className="video_title">
                                 <h3>{objCourses?.name}</h3>
-                                <input type="checkbox" checked={objCourses?.userLearn?.find(e => e.users.toString() === user._id.toString() ) ? true : false} id="vehicle1"  name="check_video"  onClick={handleCheckDone} />
+                                <input type="checkbox" checked={objCourses?.userLearn?.find(e => e.users.toString() === user._id.toString()) ? true : false} id="vehicle1" name="check_video" onClick={handleCheckDone} />
                             </div>
                             <p>{objCourses?.description}</p>
                             <div className="additioninfo">
@@ -149,18 +147,18 @@ export default function CoursesDetail() {
                                     </div>
                                     <div className="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                                         <div className="div-commentItems">
-                                        {modal?.commnets.map((comment, index)=>{
-                                            return <div key={index} className="commentItem d-flex mt-4">
-                                                <div><img className="imgC" src={comment.avatar} width="50px" height="50px" alt="index" /></div>
-                                                <div className="comment-content">
-                                                    <p>{comment.name} :
-                                                    {comment.text} </p>
-                                                    {/* <p>TRẢ LỜI</p> */}
+                                            {modal?.commnets.map((comment, index) => {
+                                                return <div key={index} className="commentItem d-flex mt-4">
+                                                    <div><img className="imgC" src={comment.avatar} width="50px" height="50px" alt="index" /></div>
+                                                    <div className="comment-content">
+                                                        <p>{comment.name} :
+                                                            {comment.text} </p>
+                                                        {/* <p>TRẢ LỜI</p> */}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        })}
-                                            
-                                       
+                                            })}
+
+
                                         </div>
                                         <div className="divForm mt-4">
                                             <form onSubmit={handleComment} className="form-inline">
@@ -177,25 +175,25 @@ export default function CoursesDetail() {
                         <div className="listlesson" disabled>
                             {coursesUser?.map((current, index) => {
                                 return <ul className="list-group" key={index}>
-                                {current.userLearn.find(e => e.users.toString() === user._id.toString() ) ?
-                                    <li>
-                                        <button onClick={() => handleChangeCourses(current._id)} className="list-group-item justify-content-between list-group-item-action ">
-                                        <div className="title">
-                                            <p>{index + 1}) {current.name}</p>
-                                            <span>{current.userLearn.find(e => e.users.toString() === user._id.toString())  ? <i className="fa fa-check"></i>:  ''}</span>
-                                        </div>
-                                        </button>
-                                    </li>
-                                    :
-                                    <li>
-                                        <button disabled={current._id === paramId ? false : true} onClick={() => handleChangeCourses(current._id)} className="list-group-item justify-content-between list-group-item-action ">
-                                        <div className="title">
-                                            <p>{index + 1}) {current.name}</p>
-                                            <span>{current.userLearn.find(e => e.users.toString() === user._id.toString())  ? <i className="fa fa-check"></i>:  ''}</span>
-                                        </div>
-                                        </button>
-                                    </li>
-                                }
+                                    {current.userLearn.find(e => e.users.toString() === user._id.toString()) ?
+                                        <li>
+                                            <button onClick={() => handleChangeCourses(current._id)} className="list-group-item justify-content-between list-group-item-action ">
+                                                <div className="title">
+                                                    <p>{index + 1}) {current.name}</p>
+                                                    <span>{current.userLearn.find(e => e.users.toString() === user._id.toString()) ? <i className="fa fa-check"></i> : ''}</span>
+                                                </div>
+                                            </button>
+                                        </li>
+                                        :
+                                        <li>
+                                            <button disabled={current._id === paramId ? false : true} onClick={() => handleChangeCourses(current._id)} className="list-group-item justify-content-between list-group-item-action ">
+                                                <div className="title">
+                                                    <p>{index + 1}) {current.name}</p>
+                                                    <span>{current.userLearn.find(e => e.users.toString() === user._id.toString()) ? <i className="fa fa-check"></i> : ''}</span>
+                                                </div>
+                                            </button>
+                                        </li>
+                                    }
                                 </ul>
                             })}
 

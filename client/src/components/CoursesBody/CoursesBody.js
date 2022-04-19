@@ -9,7 +9,7 @@ export default function CoursesBody() {
             <div className="coursesBody">
                 <div className="row">
                     <CoursesItem />
-                   
+
                 </div>
                 <div className="trainer">
                     <h3 style={{ color: 'white' }}>Huấn Luyện Viên Tiêu Biểu</h3>
@@ -22,7 +22,7 @@ export default function CoursesBody() {
                 </div>
                 <div className="feedBack">
                     <h3 style={{ color: 'white' }}>Kết Quả Của Mọi Người Sau Khi Tập</h3>
-                    <div className="row" style={{ padding: '20px'}}>
+                    <div className="row" style={{ padding: '20px' }}>
                         <FeedBackUser />
                         <FeedBackUser />
                         <FeedBackUser />
