@@ -29,7 +29,14 @@ button {
   outline: none;
   cursor: pointer;
 }
-
+.carousel-item {
+  height: 400px;
+}
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1330px;
+  }
+}
 /* Header */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;500;700&display=swap");
 @import url("./components/Body/auth/auth.css");

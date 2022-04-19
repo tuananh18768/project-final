@@ -44,6 +44,7 @@
 .header__search i {
   display: block;
   margin-right: 10px;
+  color: #ccc;
 }
 
 .header__search input {
@@ -53,6 +54,7 @@
   width: 100%;
   color: inherit;
   font-weight: 300;
+  font-size: 14px;
 }
 
 .header__search input:focus {

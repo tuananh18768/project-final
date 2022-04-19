@@ -11,13 +11,9 @@ import NotFound from '../utils/NotFound/NotFound'
 import Content from '../utils/NotFound/Content'
 import ForgotPassword from '../Body/auth/ForgotPassword'
 import ResertPassword from '../Body/auth/ResertPassword'
-// import HeaderBottom from '../Header/HeaderBottom'
-// import IdeaStaff from '../Body/iIdeaStaff/IdeaStaff'
-// import Pagination from '../Body/Pagination/Pagination'
 import ProfileUser from './Profile/ProfileUser'
 import ProfileTrainer from './Profile/ProfileTrainer'
 import EditUser from './Profile/EditUser'
-import RegisterTutorial from '../CoursesBody/Tutorial/Tutorial'
 import DetailCourses from '../CoursesBody/CoursesItem/CoursesDetail'
 import TutorialManager from '../CoursesBody/Trainer/TutorialManager'
 import CoursesManager from '../CoursesBody/Trainer/CoursesManager'
@@ -32,7 +28,7 @@ export default function Body() {
   const auth = useSelector(state => state.auth)
   const { isAdmin, isUser, isTrainer } = auth
   return (
-    <main className="main" style={{ display: 'inherit' }}>
+    <main className="container">
       <Switch>
         <Route path="/login" component={isUser || isTrainer ? NotFound : Login} exact />
         <Route path="/login/user" component={isUser ? NotFound : LoginUser} exact />
@@ -56,7 +52,6 @@ export default function Body() {
         <Route path="/discovery" component={isUser ? Discovery : NotFound} exact />
         <Route path="/" component={Content} exact />
       </Switch>
-
     </main>
 
   )
