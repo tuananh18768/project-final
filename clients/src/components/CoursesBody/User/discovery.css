@@ -1,0 +1,32 @@
+.discovery__main {
+    background-color: black;
+}
+
+.discovery__content {
+    background-color: #fff;
+    margin: 10px auto;
+    width: 80%;
+    height: 100vh;
+}
+
+.discovery__tittle {
+    padding: 20px;
+    background-color: rgb(246, 242, 242);
+}
+
+.row__discovery {
+    padding: 0 20px;
+}
+
+.discovery__ask {
+    padding: 20px;
+    margin-bottom: 40px;
+}
+
+.btn__discovery {
+    background-color: rgb(6, 107, 141);
+    padding: 10px;
+    width: 100%;
+    color: #fff;
+    margin: 10px 0;
+}

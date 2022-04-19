@@ -1,0 +1,288 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 1500px;
+}
+
+.user-top {
+    width: 100%;
+    height: 150px;
+    background-color: aqua;
+    position: relative;
+    border: 10px solid #ccc;
+}
+
+.name-user {
+    position: absolute;
+    top: 50%;
+    left: 80px;
+    transform: translateY(-50%);
+    margin-right: 20px;
+}
+
+.name-user span {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.course {
+    position: absolute;
+    display: flex;
+    gap: 0 35px;
+    bottom: 0;
+    left: 80px;
+}
+
+.logo-user {
+    padding: 30px;
+    background-color: #ccc;
+}
+
+.user-bottom {
+    width: 88%;
+    margin: 30px auto 0;
+}
+
+.user-content {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.user-left {
+    margin-left: 30px;
+    width: 60%;
+    text-align: center;
+}
+
+.user-left img {
+    width: 400px;
+    height: 380px;
+    border-radius: 50%;
+}
+
+.user-address {
+    margin-top: 60px;
+}
+
+.address-item input,
+select {
+    background-color: white;
+    padding: 10px;
+    width: 500px;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.btn-save {
+    margin-top: 80px;
+}
+
+.btn-save button {
+    padding: 5px;
+    background-color: rgb(0, 195, 255);
+    color: white;
+}
+
+.right-content {
+    margin-left: 200px;
+}
+
+.right-content h3 {
+    margin-bottom: 30px;
+}
+
+.text {
+    margin-top: 40px;
+}
+
+.btn-button {
+    margin-top: 50px;
+}
+
+.btn-button button {
+    padding: 10px 30px;
+    background-color: rgb(0, 195, 255);
+    color: white;
+}
+
+.wraper_profile_left_all {
+    background-color: #1a2249;
+    color: white;
+    border: 0 solid black;
+    width: 100%;
+    border-radius: 10px;
+    text-align: center;
+    padding: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.img_profile {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 10px solid #ddd;
+}
+
+.span__chooseFile {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 100%);
+    bottom: 0;
+    transition: all 0.5s;
+    cursor: pointer;
+    background-color: #808080c2;
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.parent__file {
+    width: 100%;
+}
+
+.parent__file:hover .span__chooseFile {
+    transform: translate(-50%, 0%);
+}
+
+#file_up::file-selector-button {
+    display: none;
+}
+
+#file_up {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 99;
+}
+
+.trainer_top {
+    width: 100%;
+    height: 150px;
+    background-color: aqua;
+    position: relative;
+    border: 10px solid #ccc;
+}
+
+.trainer_content {
+    position: absolute;
+    display: flex;
+    gap: 0 35px;
+    bottom: 0;
+    left: 80px;
+}
+
+.trainer_bottom {
+    width: 88%;
+    margin: 30px auto 0;
+}
+
+.logo_trainer {
+    padding: 30px;
+    background-color: #ccc;
+}
+
+.trainer_contentBottom {
+    margin-top: 100px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.trainer_left {
+    margin-left: 30px;
+}
+
+.trainer_left h3 {
+    margin-bottom: 35px;
+}
+
+.infor_trainer {
+    background-color: white;
+    width: 500px;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.infor_trainer input,
+textarea {
+    background-color: white;
+    padding: 10px;
+    width: 500px;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.trianer_contentRight {
+    margin-left: 200px;
+}
+
+.profile_trainer {
+    width: 400px;
+    background-color: #ccc;
+    border-radius: 10px;
+    position: relative;
+}
+
+.profile_contentTrainer {
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 90px;
+    padding-bottom: 40px;
+}
+
+.profile_itemTrainer {
+    text-align: center;
+    padding-bottom: 80px;
+    background-color: white;
+}
+
+.profile_imgTrainer {
+    width: 100px;
+    height: 100px;
+    border-radius: 100rem;
+    text-align: center;
+    margin: 0 auto;
+    padding: 5px;
+    background-color: white;
+    transform: translateY(-50%);
+}
+
+.profile_imgTrainer img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: inherit;
+    object-fit: cover;
+}
+
+.profile_nameTrainer {
+    margin-top: 10px;
+}
+
+.btn_profileTrainer {
+    margin-top: 20px;
+    padding: 10px 40px;
+    border-radius: 100rem;
+    background-color: white;
+}
+
+.profile_linkTrainer {
+    width: 50px;
+    margin: 30px auto 0;
+    display: flex;
+    gap: 50px;
+    justify-content: space-around;
+    font-size: 25px;
+}

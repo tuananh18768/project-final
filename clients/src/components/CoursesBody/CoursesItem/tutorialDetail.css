@@ -1,0 +1,14 @@
+.content_detailReigister {
+    margin: 50px 20px;
+}
+
+.registerLeft {
+    text-align: center;
+}
+
+.registerLeft .register_img {}
+
+.registerLeft .register_img img {
+    border-radius: 10px;
+    width: 100%;
+}

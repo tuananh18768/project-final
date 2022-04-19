@@ -1,0 +1,28 @@
+#coursesOwner {
+    background-color: #1D1E22;
+    height: 100vh;
+}
+
+.backGoundCourses {
+    width: 80%;
+    margin: 10px auto;
+}
+
+.backGoundCourses .courses__owner_content .search {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+    margin: 30px 0 60px;
+}
+
+.backGoundCourses .courses__owner_content .search input {
+    width: 90%;
+    height: 40px;
+    border-radius: 3px;
+    padding: 0 10px;
+}
+
+.backGoundCourses .courses__owner_content .search input:focus-visible {
+    outline: none;
+}

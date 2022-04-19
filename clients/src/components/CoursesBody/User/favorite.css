@@ -1,0 +1,19 @@
+.favorite__main {
+    background-color: black;
+}
+
+.favorite__content {
+    background-color: #fff;
+    margin: 10px auto;
+    width: 80%;
+    height: 100vh;
+}
+
+.favorite__tittle {
+    padding: 20px;
+    background-color: rgb(246, 242, 242);
+}
+
+.item__left {
+    border-right: 1px solid black;
+}

@@ -1,0 +1,38 @@
+* {
+    padding: 0;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body {
+    height: auto;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+}
+
+button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+
+/* Header */
+
+@import url("./components/Header/header.css");
+@import url("./components/Body/auth/auth.css");
+@import url("./components/Body/Profile/profile.css");
+@import url("./components/CoursesBody/CoursesItem/coursesDetail.css");
+@import url("./components/CoursesBody/Trainer/tutorialManager.css");
+@import url("./components/CoursesBody/CoursesItem/tutorialDetail.css");
+@import url("./components/CoursesBody/Trainer/dashboard.css");
+@import url("./components/CoursesBody/User/checkBody.css");
+@import url("./components/CoursesBody/User/coursesOwner.css");
+@import url("./components/CoursesBody/User/favorite.css");
+@import url("./components/CoursesBody/User/discovery.css");
