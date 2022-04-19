@@ -7,8 +7,9 @@ import DataProvider from './redux/store';
 
 ReactDOM.render(
   <React.StrictMode>
-  <DataProvider>
-    <App />
+    <DataProvider>
+      <App />,
+      <div>test</div>
     </DataProvider>
   </React.StrictMode>,
   document.getElementById('root')
