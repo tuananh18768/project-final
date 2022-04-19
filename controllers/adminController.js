@@ -7,6 +7,8 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const sendMail = require('./sendMail')
 const Categories = require('../models/catergories')
+const Discovery = require('../models/discovery')
+const NewPostDiscovery = require('../models/newPostDiscovery')
 
 
 const { CLIENT_URL } = process.env
@@ -249,6 +251,50 @@ const userController = {
             return res.status(500).json({ msg: error.message })
         }
     },
+    addDiscovery: async(req, res) => {
+        try {
+            const { name } = req.body
+            const nameDis = await Discovery.findOne({ name: name })
+            if (nameDis) {
+                return res.status(400).json({ msg: "Name discovery is already!!!" })
+            }
+            const newDis = new Discovery({
+                name
+            })
+            newDis.save()
+            res.status(200).json({ msg: "Add discovery successfully" })
+        } catch (error) {
+            return res.status(500).json({ msg: error.message })
+        }
+    },
+    addPostIntoDis: async(req, res) => {
+        try {
+            const { title, description, discovery } = req.body
+
+            let filesArray = []
+            req.files.forEach(element => {
+                const file = {
+                    fileName: element.originalname,
+                    filePath: element.path,
+                    fileType: element.mimetype,
+                    fileSize: fileSizeFormatter(element.size, 2),
+                }
+                filesArray.push(file)
+            })
+
+            const newPostDis = new NewPostDiscovery({
+                title,
+                description,
+                discovery,
+                admin_id: req.user.id,
+                imagePost: filesArray,
+            })
+            newPostDis.save()
+            res.status(200).json({ msg: "Add new post discovery successfully" })
+        } catch (error) {
+            return res.status(500).json({ msg: error.message })
+        }
+    },
     dashboard: async(req, res, ) => {
         try {
             const user = await Users.find()
@@ -273,6 +319,16 @@ const userController = {
         }
     },
 
+}
+
+const fileSizeFormatter = (bytes, decimal) => {
+    if (bytes === 0) {
+        return '0 Bytes'
+    }
+    const dm = decimal || 2
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'YB', 'ZB']
+    const index = Math.floor(Math.log(bytes) / Math.log(1000))
+    return parseFloat((bytes / Math.pow(1000, index)).toFixed(dm)) + '-' + sizes[index]
 }
 const validateEmail = (email) => {
     return email.match(

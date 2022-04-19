@@ -8,6 +8,8 @@ const Courses = require('../models/coursesModel')
 const Categories = require('../models/catergories')
 const TrainerModel = require('../models/tranierAuth')
 const RegisterModel = require('../models/registerCourseModel')
+const Discovery = require('../models/discovery')
+const NewPostDiscovery = require('../models/newPostDiscovery')
 
 const { CLIENT_URL } = process.env
 
@@ -272,6 +274,81 @@ const userController = {
             res.status(200).json(postComment)
         } catch (error) {
             return res.status(500).json({ msg: error.message })
+        }
+    },
+    addListLike: async(req, res) => {
+        try {
+            const params = await Tutorial.findOne({ linkName: req.params.name })
+            const user = await Users.findById(req.user.id)
+            const likesAble = user.heart.findIndex(like => like.toString() === params._id.toString())
+            if (likesAble !== -1) {
+                user.heart.splice(likesAble, 1)
+                user.save()
+                return res.json({ msg: 'Remove like successfully' })
+            }
+
+            user.heart.push(params._id)
+            await user.save()
+            return res.json({ msg: 'Like successfully' })
+        } catch (error) {
+            return res.status(500).json({ msg: error.message })
+        }
+    },
+    listLikeTutorial: async(req, res) => {
+        try {
+            const user = await Users.findById(req.user.id);
+            const userListLike = user.heart.map(e => e)
+            res.status(200).json(userListLike)
+        } catch (error) {
+            return res.status(500).json({ msg: error.message })
+        }
+    },
+    addLikeDiscovery: async(req, res) => {
+        try {
+            const params = await Discovery.findById(req.params.id)
+            const user = await Users.findById(req.user.id)
+            const likesAble = params.likes_user.findIndex(like => like.toString() === user._id.toString())
+            if (likesAble !== -1) {
+                params.likes_user.splice(likesAble, 1)
+                params.save()
+                return res.json({ msg: 'Remove discovery successfully' })
+            }
+
+            params.likes_user.push(user._id)
+            await params.save()
+            return res.json({ msg: 'add discovery successfully' })
+        } catch (error) {
+            return res.status(500).json({ msg: error.message })
+        }
+    },
+    listTopicDiscovery: async(req, res) => {
+        try {
+            const discovery = await Discovery.find({ likes_user: req.user.id })
+            const allTopic = await NewPostDiscovery.find({ discovery: discovery.map(e => e._id) })
+            res.json(allTopic)
+        } catch (error) {
+            res.status(500).json({ msg: error.message })
+        }
+    },
+    checkBody: async(req, res) => {
+        try {
+            const { weight, height } = req.body
+            let message = ''
+            let chiSoBMI = weight / (height * height);
+            if (chiSoBMI < 18) {
+                message = "Bạn là người gầy!";
+            } else if (chiSoBMI <= 24.9) {
+                message = "Bạn là người bình thường";
+            } else if (chiSoBMI <= 29.9) {
+                message = "Bạn bị béo phì độ I";
+            } else if (chiSoBMI <= 34.9) {
+                message = "Bạn bị béo phì độ II";
+            } else {
+                message = "Bạn bị béo phì độ III";
+            }
+            res.status(200).json(message)
+        } catch (error) {
+            res.status(500).json({ msg: error.message })
         }
     }
 }

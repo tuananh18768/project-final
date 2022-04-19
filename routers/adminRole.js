@@ -2,6 +2,7 @@ const router = require('express').Router()
 const adminController = require('../controllers/adminController')
 const auth = require('../middleware/auth')
 const authAdmin = require('../middleware/authAdmin')
+const { uploadImagePost } = require('../middleware/uploadImagePost')
 
 router.post('/register', adminController.register)
 
@@ -38,6 +39,10 @@ router.put('/update_category/:id', auth, authAdmin, adminController.updateCatego
 router.delete('/delete_category/:id', auth, authAdmin, adminController.deleteCategory)
 
 router.get('/get_allCate', auth, authAdmin, adminController.getAllCategory)
+
+router.post('/add_discovery', auth, authAdmin, adminController.addDiscovery)
+
+router.post('/add_newPost', auth, authAdmin, uploadImagePost.array('file', 12), adminController.addPostIntoDis)
 
 router.get('/dashboard/', auth, authAdmin, adminController.dashboard)
 

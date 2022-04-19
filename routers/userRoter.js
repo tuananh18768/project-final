@@ -40,4 +40,14 @@ router.put('/done_courses/:id', auth, userController.doneCourses)
 
 router.post('/comment_tutorial/:name', auth, userController.addComment)
 
+router.put('/add_listLike/:name', auth, userController.addListLike)
+
+router.get('/list_like/', auth, userController.listLikeTutorial)
+
+router.put('/add_likeDiscovery/:id', auth, userController.addLikeDiscovery)
+
+router.get('/add_likeDiscovery', auth, userController.listTopicDiscovery)
+
+router.post('/check_body', auth, userController.checkBody)
+
 module.exports = router
