@@ -79,7 +79,18 @@ export default function Header() {
         <div className={style.header__login}>
           {
             isUser || isTrainer ?
-              userLink() :
+              <div className={style.header__info}>
+                <div className={style.header__avatar}>
+                  <img src={trainer.avatar} alt="" />
+                </div>
+                <span className={style.header__name}>{trainer.name} <i className="fa-solid fa-angle-down" /></span>
+                <ul className={style.header__dropdown}>
+                  <li><i class="fa-solid fa-user"></i> Thông tin cá nhân</li>
+                  <li><i class="fa-solid fa-heart"></i> Danh sách yêu thích</li>
+                  <li><Link to='/' onClick={() => { handleLogout() }}><i class="fa-solid fa-heart"></i> Đăng xuất</Link></li>
+                </ul>
+              </div>
+              :
               <>
                 <Link to="/login"><button className={style["header__login--button"]}>Đăng nhập</button></Link>
                 <button className={`${style["header__login--button"]} ${style["header__login--border"]}`}>Đăng ký</button>
