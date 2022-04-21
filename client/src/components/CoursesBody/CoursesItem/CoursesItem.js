@@ -2,34 +2,39 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { fetchAllTutorial, dispatchAllTutorial } from '../../../redux/actions/tutorialAction'
-
+import style from '../course.module.css'
 export default function CoursesItem() {
     const tutorials = useSelector(state => state.tutorials)
     const dispatch = useDispatch()
 
-    const {tutorialsUser} = tutorials
+    const { tutorialsUser } = tutorials
     useEffect(() => {
         return fetchAllTutorial().then(res => dispatch(dispatchAllTutorial(res)))
     }, [dispatch])
     return (
 
-     <>
+        <>
             {
                 tutorialsUser.map((current, index) => {
-                return <div key={index} className="col-3">
-                    <div className="card" style={{ width: '15rem', marginBottom: '20px' }}>
-                        <img src={current.avatar_couses} className="card-img-top" style={{ height: '150px', objectFit: 'contain'}}alt="index" />
-                        <div className="card-body">
-                            <h5 className="card-title" style={{ fontSize: '14px' }}>{current.name}</h5>
-                            <Link to={`courses/${current.linkName}`} style={{ fontSize: '12px', marginRight: '45px' }} className="btn btn-primary">Tham gia khóa học</Link>
-                            <i class="fa fa-heart"></i>
+                    return <div className="col-3">
+                        <div className={style.course__item}>
+                            <img src={current.avatar_couses} alt />
+                            <div className={style.course__body}>
+                                <span className={style.course__topic}>Thiết kế</span>
+                                <h5 className={style.course__title}>{current.name}</h5>
+                                <p className={style.course__description}>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                    Odio facilis cumque vel eum dicta</p>
+                                <Link to={`courses/${current.linkName}`}>
+                                    <button className={style.course__join}>Tham gia khoá học</button>
+                                </Link>
+                            </div>
                         </div>
                     </div>
-                </div>
-            })
 
-        }
-     </>
+                })
+
+            }
+        </>
 
     )
 }

@@ -1,0 +1,93 @@
+.course img {
+  height: 150px;
+  object-fit: cover;
+}
+
+.course__item {
+  border-radius: 10px;
+  box-shadow: 1px 1px 15px 0px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+.course__item img {
+  height: 150px;
+  object-fit: cover;
+}
+.course__body {
+  padding: 10px;
+}
+
+.course__topic {
+  font-size: 13px;
+  color: #c19e01;
+}
+
+.course__title {
+  font-size: 18px;
+}
+
+.course__description {
+  font-size: 13px;
+}
+
+.course__join {
+  border: none;
+  border-radius: 20px;
+  background-color: #c19e01;
+  color: white;
+  padding: 10px 20px;
+  font-size: 12px;
+  display: block;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  z-index: 2;
+  transition: all 0.5s;
+}
+
+.course__join::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  transform: translateX(-100%);
+  transition: all 0.5s;
+  border-radius: 20px;
+  z-index: -1;
+}
+
+.course__join:hover {
+  color: #e7e5e5;
+}
+
+.course__join:hover::before {
+  transform: translateX(0);
+}
+
+.course__menu {
+  list-style: none;
+  display: flex;
+  padding: 4px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.course__menu li {
+  padding: 10px 40px;
+  border-radius: 20px;
+  font-weight: 400;
+  color: #2d2d2d;
+  cursor: pointer;
+  transition: background-color 0.25s;
+}
+.course__menu li a {
+  color: #2d2d2d;
+}
+.course__menu li:hover {
+  background-color: #fccf00;
+}
+.course__menu li:hover a {
+  color: white;
+}
