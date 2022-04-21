@@ -37,6 +37,10 @@ button {
     max-width: 1330px;
   }
 }
+.content__type {
+  padding: 0 20px;
+  background-color: #fafafa;
+}
 /* Header */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;500;700&display=swap");
 @import url("./components/Body/auth/auth.css");

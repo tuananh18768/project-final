@@ -1,0 +1,21 @@
+.trainer {
+  margin-top: 80px;
+}
+.trainer__item img {
+  display: block;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.trainer h4 {
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+.trainer__feedback {
+  margin-top: 50px;
+}
+.trainer__feedback h4 {
+  font-weight: bold;
+  margin-bottom: 15px;
+}

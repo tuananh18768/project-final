@@ -1,39 +1,48 @@
-import React from 'react'
-
+import React from "react";
+import style from "./footer.module.css";
 export default function Footer() {
   return (
-    <div className="footerView">
+    <footer className={style.footer}>
       <div className="container">
-      <div className="row">
-        <div className="col-3">
-          <h3>VỀ CHÚNG TÔI</h3>
-          <div style={{ textAlign: 'left' }}>
-            <p>Điều khoản</p>
-            <p>Chính sách bảo mật</p>
+        <div className={style.footer__content}>
+          <div className={style.footer__top}>
+            <div className={style.footer__item}>
+              <h5 className={style.footer__title}>Về chúng tôi</h5>
+              <ul>
+                <li>Điều khoản</li>
+                <li>Chính sách bảo mật</li>
+              </ul>
+            </div>
+            <div className={style.footer__item}>
+              <h5 className={style.footer__title}>Cộng đồng</h5>
+              <ul>
+                <li>Điều khoản</li>
+                <li>Chính sách bảo mật</li>
+              </ul>
+            </div>
+            <div className={style.footer__item}>
+              <h5 className={style.footer__title}>Địa chỉ</h5>
+              <ul>
+                <li>Công ty TNHH Công Nghệ Giáo Dục Topica Việt Nam</li>
+                <li>MST: 0109475876</li>
+                <li>
+                  Địa chỉ: Tầng 6, Tòa nhà Kim Khí Thăng long, Sô 1 Lương Yên,
+                  Phường Bạch Đằng, Quận Hai Bà Trưng, Thành phố Hà Nội, Việt
+                  Nam
+                </li>
+                <li>Email: trogiup@edumall.vn</li>
+              </ul>
+            </div>
+            <div className={style.footer__item}>
+              <h5 className={style.footer__title}>TẢI APP EDUMALL:</h5>
+              <ul>
+                <li>Điều khoản</li>
+                <li>Chính sách bảo mật</li>
+              </ul>
+            </div>
           </div>
         </div>
-        <div className="col-6">
-          <h3>ĐỊA CHỈ</h3>
-          <div style={{ textAlign: 'left' }}>
-            <p>Công ty TNHH Thể dục thể thao Việt Nam</p>
-            <p>MST: 0109475876</p>
-            <p>Địa chỉ: Tầng 6, Tòa nhà Kim Khí Thăng long, Sô 1 Lương Yên, Phường Bạch Đằng, Quận Hai Bà Trưng, Thành phố Hà Nội, Việt Nam</p>
-            <p>Email: <span style={{ color: 'red' }}>bachtuananh16@gmail.com</span></p>
-          </div>
-        </div>
-        <div className="col-3 icon text-right">
-          <button>
-            <i className="fab fa-facebook-square"></i>
-          </button>
-          <button>
-            <i className="fab fa-instagram"></i>
-          </button>
-          <button>
-            <i className="fab fa-twitter"></i>
-          </button>
-        </div>
       </div>
-      </div>
-    </div>
-  )
+    </footer>
+  );
 }

@@ -57,9 +57,9 @@ export default function App() {
     <Router>
       <div className="App">
         <Header />
-        <div style={{ marginBottom: "70px" }} />
+        <div style={{ marginTop: "70px" }} />
         <Body />
-        {/* <Footer /> */}
+        <Footer />
       </div>
     </Router>
   )

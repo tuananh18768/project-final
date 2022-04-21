@@ -5,11 +5,10 @@ import CoursesBody from '../../CoursesBody/CoursesBody'
 import Footer from '../../Footer/Footer'
 export default function Content() {
   return (
-    <div id="content_type">
-        <Banner />
-        <Catergory />
-        <CoursesBody />
-        <Footer />
+    <div className="content__type">
+      <Banner />
+      <Catergory />
+      <CoursesBody />
     </div>
   )
 }
