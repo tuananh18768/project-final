@@ -1,9 +1,9 @@
-const router = require('express').Router();
-const uploadController = require('../controllers/uploadController');
-const auth = require('../middleware/auth')
-const multer = require('multer');
-const uploadImage = require('../middleware/uploadImage')
-const { upload } = require('../middleware/documentIdea')
+const router = require("express").Router();
+const uploadController = require("../controllers/uploadController");
+const auth = require("../middleware/auth");
+const multer = require("multer");
+const uploadImage = require("../middleware/uploadImage");
+const { upload } = require("../middleware/documentIdea");
 
 // const MIME_TYPES = {
 //     "application/pdf": "pdf",
@@ -29,7 +29,12 @@ const { upload } = require('../middleware/documentIdea')
 // const upload = multer({ storage: storage, fileFilter: filefilter })
 
 // router.post('/upload_avatar', upload.single('file'), uploadImage, uploadController.uploadAvatar)
-router.post('/upload_avatar', uploadImage, auth, uploadController.uploadAvatar)
-    // router.post('/upload_idea', upload.array('file', 12), uploadController.uploadIdea)
+router.post("/upload_avatar", uploadImage, auth, uploadController.uploadAvatar);
 
-module.exports = router
+router.get("/allTrainer/:trainerId", uploadController.getAllTrainer);
+
+router.get("/allUser/:userId", uploadController.getAllUser);
+
+router.get("/friend/:userId", uploadController.getFriendFlow);
+
+module.exports = router;

@@ -1,10 +1,10 @@
-import ACTIONS from '../actions/index'
+import ACTIONS from "../actions/index";
 
 const token = {
-    tokenUser: '',
-    tokenTrainer: ''
-}
-
+    tokenUser: "",
+    tokenTrainer: "",
+    tokenAdmin: "",
+};
 
 const tokenReducer = (state = token, action) => {
     switch (action.type) {
@@ -12,21 +12,28 @@ const tokenReducer = (state = token, action) => {
             {
                 return {
                     ...state,
-                    tokenUser: action.payload
-                }
+                    tokenUser: action.payload,
+                };
             }
         case ACTIONS.GET_TOKEN_TRAINER:
             {
                 return {
                     ...state,
-                    tokenTrainer: action.payload
-                }
+                    tokenTrainer: action.payload,
+                };
+            }
+        case ACTIONS.GET_TOKEN_ADMIN:
+            {
+                return {
+                    ...state,
+                    tokenAdmin: action.payload,
+                };
             }
         default:
             {
-                return state
+                return state;
             }
     }
-}
+};
 
-export default tokenReducer
+export default tokenReducer;

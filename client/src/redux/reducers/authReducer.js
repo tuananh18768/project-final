@@ -1,13 +1,14 @@
-import ACTIONS from '../actions/index'
+import ACTIONS from "../actions/index";
 
 const initialState = {
     user: [],
     trainer: [],
+    admin: [],
     isLogged: false,
     isUser: false,
     isAdmin: false,
     isTrainer: false,
-}
+};
 
 const authReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -16,14 +17,21 @@ const authReducer = (state = initialState, action) => {
                 return {
                     ...state,
                     isUser: true,
-                }
+                };
             }
         case ACTIONS.LOGIN_TRAINER:
             {
                 return {
                     ...state,
                     isTrainer: true,
-                }
+                };
+            }
+        case ACTIONS.LOGIN_ADMIN:
+            {
+                return {
+                    ...state,
+                    isAdmin: true,
+                };
             }
         case ACTIONS.GET_USER:
             {
@@ -31,8 +39,8 @@ const authReducer = (state = initialState, action) => {
                     ...state,
                     user: action.payload.user,
                     isAdmin: action.payload.isAdmin,
-                    isUser: action.payload.isUser
-                }
+                    isUser: action.payload.isUser,
+                };
             }
         case ACTIONS.GET_TRAINER:
             {
@@ -40,12 +48,19 @@ const authReducer = (state = initialState, action) => {
                     ...state,
                     trainer: action.payload.trainer,
                     isTrainer: action.payload.isTrainer,
-                }
+                };
+            }
+        case ACTIONS.GET_ADMIN:
+            {
+                return {
+                    ...state,
+                    admin: action.payload.admin,
+                };
             }
         default:
             {
                 return state;
             }
     }
-}
-export default authReducer
+};
+export default authReducer;

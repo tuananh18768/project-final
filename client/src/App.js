@@ -5,19 +5,20 @@ import Header from './components/Header/Header'
 import Body from './components/Body/Body'
 import axios from 'axios'
 import ACTIONS from './redux/actions/index'
-import { dispatchLoginUser, dispatchLoginTrainer, fetchUser, dispatchGetUser, fetchTrainer, dispatchGetTrainer } from './redux/actions/authAction'
+import { dispatchLoginUser, dispatchLoginTrainer, dispatchLoginAdmin, fetchUser, fetchAdmin, dispatchGetUser, dispatchGetAdmin, fetchTrainer, dispatchGetTrainer } from './redux/actions/authAction'
 import Footer from './components/Footer/Footer'
 
 export default function App() {
   const dispatch = useDispatch()
   const token = useSelector(state => state.token)
   const auth = useSelector(state => state.auth)
-  const { tokenUser, tokenTrainer } = token
-  const { isUser, isTrainer } = auth
+  const { tokenUser, tokenTrainer, tokenAdmin } = token
+  const { isUser, isTrainer, isAdmin } = auth
   useEffect(() => {
     const firstLogin = localStorage.getItem('firstLogin')
     const secondLogin = localStorage.getItem('secondLogin')
-    if (firstLogin && !secondLogin) {
+    const adminLogin = localStorage.getItem('admin')
+    if (firstLogin && !secondLogin && !adminLogin) {
       // console.log('firstLogin', tokenUser);
       const getToken = async () => {
         const res = await axios.post('/user/refresh_token', null)
@@ -25,14 +26,22 @@ export default function App() {
       }
       getToken()
     }
-    if (secondLogin) {
+    if (secondLogin && !adminLogin) {
       const getTokenTrainer = async () => {
         const res = await axios.post('/trainer/refresh_token', null)
         dispatch({ type: ACTIONS.GET_TOKEN_TRAINER, payload: res.data.access_token })
       }
       getTokenTrainer()
     }
-  }, [dispatch, isUser, isTrainer])
+    if (adminLogin) {
+      const getTokenAdmin = async () => {
+        const res = await axios.post('/admin/refresh_token', null)
+        dispatch({ type: ACTIONS.GET_TOKEN_ADMIN, payload: res.data.access_token })
+      }
+      getTokenAdmin()
+    }
+  }, [dispatch, isUser, isTrainer, isAdmin])
+
   useEffect(() => {
     if (tokenUser) {
       const getUser = () => {
@@ -52,14 +61,25 @@ export default function App() {
       }
       getTrainer()
     }
-  }, [token, dispatch, isUser, isTrainer])
+    if (tokenAdmin) {
+      const getAdmin = () => {
+        dispatch(dispatchLoginAdmin())
+        return fetchAdmin(tokenAdmin).then(res => {
+          dispatch(dispatchGetAdmin(res))
+        })
+      }
+      getAdmin()
+    }
+
+  }, [token, dispatch, tokenUser, tokenTrainer, tokenAdmin])
   return (
     <Router>
       <div className="App">
         <Header />
-        <div style={{ marginTop: "70px" }} />
-        <Body />
-        <Footer />
+        <div style={{ marginTop: "70px" }}>
+          <Body />
+          {/* <Footer /> */}
+        </div>
       </div>
     </Router>
   )

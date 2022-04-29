@@ -6,13 +6,15 @@ import style from "./header.module.css"
 export default function Header() {
 
   const auth = useSelector(state => state.auth)
-  const { user, isLogged, trainer, isUser, isTrainer } = auth
+  const { user, isLogged, admin, trainer, isUser, isTrainer, isAdmin } = auth
   const handleLogout = async () => {
     try {
       await axios.get('/user/logout')
       localStorage.removeItem('firstLogin')
       await axios.get('/trainer/logout')
       localStorage.removeItem('secondLogin')
+      await axios.get('/admin/logout')
+      localStorage.removeItem('admin')
       window.location.href = '/'
     } catch (error) {
       window.location.href = "/"
@@ -78,16 +80,22 @@ export default function Header() {
       <div className={style.header__right}>
         <div className={style.header__login}>
           {
-            isUser || isTrainer ?
+            isUser || isTrainer || isAdmin ?
               <div className={style.header__info}>
                 <div className={style.header__avatar}>
-                  <img src={trainer.avatar} alt="" />
+                  <img src={trainer.avatar || user.avatar || admin.avatar} alt="" />
                 </div>
-                <span className={style.header__name}>{trainer.name} <i className="fa-solid fa-angle-down" /></span>
+                <span className={style.header__name}>{trainer.name || user.name || admin.name} <i className="fa-solid fa-angle-down" /></span>
                 <ul className={style.header__dropdown}>
-                  <li><i class="fa-solid fa-user"></i> Thông tin cá nhân</li>
-                  <li><i class="fa-solid fa-heart"></i> Danh sách yêu thích</li>
-                  <li><Link to='/' onClick={() => { handleLogout() }}><i class="fa-solid fa-heart"></i> Đăng xuất</Link></li>
+                  <li><Link to={isUser && '/profile/user' || isTrainer && '/profile/trainer' || isAdmin && '/profile/admin'}><i class="fa-solid fa-user"></i> Thông tin cá nhân</Link> </li>
+                  {isUser && <li><Link to='/courseOwner' > <i className="fa fa-book" /> Khóa học</Link></li>}
+                  {isUser && <li><Link to='/favorite' ><i class="fa-solid fa-heart"></i> Yêu thích</Link></li>}
+                  {isUser && <li><Link to='/discovery' > <i className="fa fa-search-plus" /> Khám phá</Link></li>}
+                  {isUser && <li><Link to='/checkBody' > <i className="fa fa-plus" /> Kiểm tra sức khỏe</Link></li>}
+                  <li><Link to='/messenger' > <i class="fa-brands fa-facebook-messenger"></i> {isUser && "Trò chuyện với giảng viên" || isTrainer && "Hỗ trợ học viên"}</Link></li>
+                  {isTrainer && <li><Link to='/tutorial' > <i class="fa-solid fa-list-check"></i> Quản lý các khóa học</Link></li>}
+                  {isTrainer && <li><Link to='/courses' > <i class="fa-solid fa-chart-line"></i> Dashboard</Link></li>}
+                  <li><Link to='/' onClick={() => { handleLogout() }}> <i className="fa-solid fa-power-off" /> Đăng xuất</Link></li>
                 </ul>
               </div>
               :

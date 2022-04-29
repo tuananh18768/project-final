@@ -1,10 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchTutorialUserRegisted, dispatchTutorialUserRegisted } from '../../../redux/actions/tutorialAction'
+import style from '../course.module.css'
 
 export default function CousesOwner() {
+  const tutorialUserLike = useSelector(state => state.tutorials)
+  const token = useSelector(state => state.token)
+  const { listRegistedUser } = tutorialUserLike
+  const { tokenUser } = token
+
+  const dispatch = useDispatch()
+  console.log(listRegistedUser)
+
+  useEffect(() => {
+    if (tokenUser) {
+      fetchTutorialUserRegisted(tokenUser).then(res => dispatch(dispatchTutorialUserRegisted(res)))
+    }
+  }, [tokenUser, dispatch])
+
   return (
     <div id="coursesOwner">
-      <div className="user-top">
+      {/* <div className="user-top">
         <div className="name-user">
           <span>Thành viên: Bạch Tuấn Anh</span>
         </div>
@@ -30,7 +47,7 @@ export default function CousesOwner() {
             <Link to="/checkBody">Tình trạng sức khỏe</Link>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="backGoundCourses">
         <div className="courses__owner_content">
           <div className="search">
@@ -39,66 +56,25 @@ export default function CousesOwner() {
           </div>
           <div className="content__main">
             <div className="row">
-              <div className="col-3">
-                <div className="card" style={{ width: "18rem" }}>
-                  <img
-                    style={{ height: "190px", objectFit: "cover" }}
-                    src="https://cdn.popsww.com/blog/sites/2/2022/01/thanh-guom-diet-quy-review.jpg"
-                    className="card-img-top"
-                    alt="..."
-                  />
-                  <div className="card-body">
-                    <h5 className="card-title">Card title</h5>
-                    <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </p>
-                    <a href="#" className="btn btn-primary">
-                      Tiếp tục học
-                    </a>
+              {listRegistedUser.map((course, index) => {
+                return <div className="col-3" key={index}>
+                  <div className="card" style={{ width: "18rem" }}>
+                    <img
+                      style={{ height: "190px", objectFit: "cover" }}
+                      src={course.avatarCourse}
+                      className="card-img-top"
+                      alt="..."
+                    />
+                    <div className="card-body">
+                      <h5 className="card-title">{course.nameCourse}</h5>
+                      <p className="card-text">{course?.desCourse?.length > 30 ? course?.desCourse.slice(0, 80) + "..." : course?.desCourse}</p>
+                      <Link to={`courses/${course.courseLinkName}`}>
+                        <button className={style.course__join}>Tham gia khoá học</button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="col-3">
-                <div className="card" style={{ width: "18rem" }}>
-                  <img
-                    style={{ height: "190px", objectFit: "cover" }}
-                    src="https://image.thanhnien.vn/w660/Uploaded/2022/ygtmjz/2020_12_15/demon_slayer_vbco.jpg"
-                    className="card-img-top"
-                    alt="..."
-                  />
-                  <div className="card-body">
-                    <h5 className="card-title">Card title</h5>
-                    <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </p>
-                    <a href="#" className="btn btn-primary">
-                      Tiếp tục học
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div className="col-3">
-                <div className="card" style={{ width: "18rem" }}>
-                  <img
-                    style={{ height: "190px", objectFit: "cover" }}
-                    src="https://nocodebuilding.com/wp-content/uploads/2021/09/thanh-guom-diet-quy-1.jpg"
-                    className="card-img-top"
-                    alt="..."
-                  />
-                  <div className="card-body">
-                    <h5 className="card-title">Card title</h5>
-                    <p className="card-text">
-                      Some quick example text to build on the card title and
-                      make up the bulk of the card's content.
-                    </p>
-                    <a href="#" className="btn btn-primary">
-                      Tiếp tục học
-                    </a>
-                  </div>
-                </div>
-              </div>
+              })}
             </div>
           </div>
         </div>

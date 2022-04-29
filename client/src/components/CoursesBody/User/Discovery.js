@@ -1,7 +1,41 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
+import { fetchDiscovery, dispatchDiscovery } from '../../../redux/actions/discoveryAction'
+import { useDispatch, useSelector } from 'react-redux'
+import Swal from 'sweetalert2'
 
 export default function Discovery() {
+    const discoverys = useSelector(state => state.discovery)
+    const token = useSelector(state => state.token)
+    const { listDiscovery } = discoverys
+    const { tokenUser } = token
+
+    const dispatch = useDispatch()
+    const [loading, setLoading] = useState(0);
+
+    useEffect(() => {
+        if (tokenUser) {
+            fetchDiscovery(tokenUser).then(res => dispatch(dispatchDiscovery(res)))
+        }
+    }, [tokenUser, dispatch, loading])
+
+    const handleClick = async (e, id) => {
+        e.preventDefault();
+        try {
+            const res = await axios.put(`/user/add_likeDiscovery/${id}`, {}, { headers: { Authorization: tokenUser } })
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: res.data.msg,
+                showConfirmButton: false,
+                timer: 1500
+            })
+            setLoading(Date.now());
+        } catch (error) {
+
+        }
+    }
     return (
         <div className="discovery__main">
             <div className="user-top">
@@ -37,24 +71,14 @@ export default function Discovery() {
                 </div>
                 <h4 className='discovery__ask'>Bạn quan tâm đến chủ đề nào? (Bấm để chọn)</h4>
                 <div className="row mt-3 row__discovery">
-                    <div className="col-4 discover__item text-center">
-                        <button className="btn__discovery">Chế độ ăn uống giảm cân</button>
-                    </div>
-                    <div className="col-4 discovery__item text-center">
-                        <button className="btn__discovery">Chế độ ăn uống tăng cân</button>
-                    </div>
-                    <div className="col-4 discovery__item text-center">
-                        <button className="btn__discovery">Chăm sóc sức khỏe</button>
-                    </div>
-                    <div className="col-4 discovery__item text-center">
-                        <button className="btn__discovery">Thực phẩm bổ sung cho tập gym</button>
-                    </div>
-                    <div className="col-4 discovery__item text-center">
-                        <button className="btn__discovery">Phục hồi và trị liệu</button>
-                    </div>
-                    <div className="col-4 discovery__item text-center">
-                        <button className="btn__discovery">Cải thiện vóc dáng</button>
-                    </div>
+                    {listDiscovery.map((current, index) => {
+                        return <div key={index} className="col-4 discover__item text-center">
+                            <button onClick={(e) => { handleClick(e, current._id) }} className="btn__discovery">
+                                {current.name}
+                                {current.userDis && <i class="fa-solid fa-check"></i>}
+                            </button>
+                        </div>
+                    })}
                 </div>
             </div>
         </div>

@@ -15,7 +15,9 @@
         "react-router-dom": "^5.2.0",
         "react-scripts": "5.0.0",
         "redux": "^4.1.2",
+        "socket.io-client": "^4.5.0",
         "sweetalert2": "^11.4.8",
+        "timeago.js": "^4.0.2",
         "use-query-params": "^1.2.3",
         "web-vitals": "^2.1.4"
     },

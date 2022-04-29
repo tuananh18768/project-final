@@ -1,32 +1,78 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { fetchAllTutorial, dispatchAllTutorial } from '../../../redux/actions/tutorialAction'
+import { fetchAllTutorial, dispatchAllTutorial, fetchAllTutorialLogin, dispatchAllTutorialLogin } from '../../../redux/actions/tutorialAction'
 import style from '../course.module.css'
+import Swal from 'sweetalert2'
+import axios from 'axios'
+
 export default function CoursesItem() {
     const tutorials = useSelector(state => state.tutorials)
+    const token = useSelector(state => state.token)
+    const { tokenUser } = token
     const dispatch = useDispatch()
 
-    const { tutorialsUser } = tutorials
+    const [heart, setHeart] = useState(false)
+    const [loading, setLoading] = useState(0);
+    const { tutorialsUser, tutorialLoginUser } = tutorials
     useEffect(() => {
         return fetchAllTutorial().then(res => dispatch(dispatchAllTutorial(res)))
     }, [dispatch])
-    return (
 
+    useEffect(() => {
+        if (tokenUser) {
+            fetchAllTutorialLogin(tokenUser).then(res => dispatch(dispatchAllTutorialLogin(res)))
+        }
+    }, [dispatch, tokenUser, loading])
+    const handleLike = async (e, linkName) => {
+        e.preventDefault()
+        try {
+            const res = await axios.put(`/user/add_listLike/${linkName}`, {}, { headers: { Authorization: tokenUser } })
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: res.data.msg,
+                showConfirmButton: false,
+                timer: 1500
+            })
+            setLoading(Date.now());
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    return (
         <>
-            {
+            {!tokenUser ?
                 tutorialsUser.map((current, index) => {
-                    return <div className="col-3">
-                        <div className={style.course__item}>
-                            <img src={current.avatar_couses} alt />
+                    return <div className="col-3" key={index}>
+                        <div className={style.course__item} style={{ minHeight: "350px" }}>
+                            <img src={current.avatar_couses} alt="index" />
                             <div className={style.course__body}>
                                 <span className={style.course__topic}>Thiết kế</span>
                                 <h5 className={style.course__title}>{current.name}</h5>
-                                <p className={style.course__description}>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                    Odio facilis cumque vel eum dicta</p>
+                                <p style={{ minHeight: "55px" }} className={style.course__description}>{current?.description?.length > 30 ? current?.description.slice(0, 80) : current?.description}</p>
                                 <Link to={`courses/${current.linkName}`}>
                                     <button className={style.course__join}>Tham gia khoá học</button>
                                 </Link>
+                                <button className={style.course__btnHeart}>{heart ? <i class="fa-solid fa-heart"></i> : <i class="fa-regular fa-heart"></i>}</button>
+                            </div>
+                        </div>
+                    </div>
+
+                })
+                :
+                tutorialLoginUser.map((current, index) => {
+                    return <div className="col-3" key={index}>
+                        <div className={style.course__item} style={{ minHeight: "350px" }}>
+                            <img src={current.avatar_couses} alt="index" />
+                            <div className={style.course__body}>
+                                <span className={style.course__topic}>Thiết kế</span>
+                                <h5 className={style.course__title}>{current.name}</h5>
+                                <p style={{ minHeight: "55px" }} className={style.course__description}>{current?.description?.length > 30 ? current?.description.slice(0, 80) : current?.description}</p>
+                                <Link to={`courses/${current.linkName}`}>
+                                    <button className={style.course__join}>Tham gia khoá học</button>
+                                </Link>
+                                <button onClick={(e) => { handleLike(e, current._id) }} className={style.course__btnHeart}>{current.userLikes ? <i class="fa-solid fa-heart"></i> : <i class="fa-regular fa-heart"></i>}</button>
                             </div>
                         </div>
                     </div>
@@ -34,6 +80,7 @@ export default function CoursesItem() {
                 })
 
             }
+
         </>
 
     )

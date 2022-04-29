@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const userShema = new mongoose.Schema({
     name: {
@@ -13,7 +13,7 @@ const userShema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: [true, "Please enter your password"]
+        required: [true, "Please enter your password"],
     },
     role: {
         type: Number,
@@ -32,15 +32,18 @@ const userShema = new mongoose.Schema({
     graduate: {
         type: String,
     },
+    followings: {
+        type: Array,
+        default: [],
+    },
     cousers: [{
         type: Schema.Types.ObjectId,
-        ref: 'Courses'
-    }]
+        ref: "Courses",
+    }, ],
 }, {
-    timestamps: true
-})
+    timestamps: true,
+});
 
+const userModel = mongoose.model("Trainer", userShema);
 
-const userModel = mongoose.model('Trainer', userShema)
-
-module.exports = userModel
+module.exports = userModel;

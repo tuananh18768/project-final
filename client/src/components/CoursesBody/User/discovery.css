@@ -30,3 +30,9 @@
     color: #fff;
     margin: 10px 0;
 }
+
+.btn__discovery i {
+    color: black;
+    font-size: 23px;
+    margin-left: 30px;
+}

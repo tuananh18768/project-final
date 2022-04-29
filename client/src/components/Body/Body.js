@@ -6,6 +6,7 @@ import LoginTrainer from './auth/LoginTrainer'
 import Login from './auth/Login'
 import RegisterUser from './auth/RegisterUser'
 import RegisterTrainer from './auth/RegisterTrainer'
+import LoginAdmin from './auth/LoginAdmin'
 import { useSelector } from 'react-redux'
 import NotFound from '../utils/NotFound/NotFound'
 import Content from '../utils/NotFound/Content'
@@ -23,6 +24,7 @@ import CheckBody from '../CoursesBody/User/CheckBody'
 import CoursesOwner from '../CoursesBody/User/CousesOwner'
 import Favorite from '../CoursesBody/User/Favorite'
 import Discovery from '../CoursesBody/User/Discovery'
+import Messenger from '../Messenger/Messsenger'
 
 export default function Body() {
   const auth = useSelector(state => state.auth)
@@ -33,6 +35,7 @@ export default function Body() {
         <Route path="/login" component={isUser || isTrainer ? NotFound : Login} exact />
         <Route path="/login/user" component={isUser ? NotFound : LoginUser} exact />
         <Route path="/login/trainer" component={isTrainer ? NotFound : LoginTrainer} exact />
+        <Route path="/admin" component={isAdmin ? NotFound : LoginAdmin} exact />
         <Route path="/register/user" component={isUser ? NotFound : RegisterUser} exact />
         <Route path="/register/trainer" component={isUser ? NotFound : RegisterTrainer} exact />
         <Route path="/forgot_password" component={isUser ? NotFound : ForgotPassword} exact />
@@ -50,6 +53,7 @@ export default function Body() {
         <Route path="/courseOwner" component={isUser ? CoursesOwner : NotFound} exact />
         <Route path="/favorite" component={isUser ? Favorite : NotFound} exact />
         <Route path="/discovery" component={isUser ? Discovery : NotFound} exact />
+        <Route path="/messenger" component={isUser || isTrainer ? Messenger : NotFound} exact />
         <Route path="/" component={Content} exact />
       </Switch>
     </main>
