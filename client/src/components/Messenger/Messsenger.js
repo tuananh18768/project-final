@@ -95,37 +95,14 @@ export default function Messsenger() {
 
     useEffect(() => {
         scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
+        console.log(scrollRef.current)
     }, [messages])
+
+    console.log(currentChat)
     return (
         <>
-            <div className="user-top">
-                <div className="name-user">
-                    <span>Thành viên: Bạch Tuấn Anh</span>
-                </div>
-                <div className="course">
-                    <div className="coure-item">
-                        <i className="fa fa-book" />
-                        <Link to="/courseOwner">Khóa Học</Link>
-                    </div>
-                    <div className="coure-item">
-                        <i className="fa fa-user" />
-                        <Link to="/profile/user">Hồ sơ cá nhân</Link>
-                    </div>
-                    <div className="coure-item">
-                        <i className="fa fa-book" />
-                        <Link to="/favorite">Yêu Thích</Link>
-                    </div>
-                    <div className="coure-item">
-                        <i className="fa fa-search-plus" />
-                        <Link to="/discovery">Khám Phá</Link>
-                    </div>
-                    <div className="coure-item">
-                        <i className="fa fa-plus" />
-                        <Link to="/checkBody">Tình trạng sức khỏe</Link>
-                    </div>
-                </div>
-            </div>
-            <div className="messenger">
+
+            {/* <div className="messenger">
                 <div className="chatMenu">
                     <div className="chatMenuWrapper">
                         <input type="text" placeholder='Search for friends' className="chatMenuInput" />
@@ -159,7 +136,70 @@ export default function Messsenger() {
                         <ChatOnline onlineUser={onlineUser} currentId={user._id || trainer._id} setCurrentChat={setCurrentChat} />
                     </div>
                 </div>
+            </div> */}
+            <div className="chat container" style={{ maxWidth: '100%' }}>
+                <div className="row">
+                    <div className="col col-lg-1">
+                        <div className="chat__wrapicon">
+                            <div className="chat__icon"><i className="fa-regular fa-message" /></div>
+                            <div className="chat__icon"><i className="fa-regular fa-bell" /></div>
+                            <div className="chat__icon"><i className="fa-solid fa-gear" /></div>
+                        </div>
+                    </div>
+                    <div className="col-9 mt-3">
+                        <div className="chat__content">
+                            <div className="chat__content__left">
+                                <div className="chat__content__left_tt"><h2>Chat</h2><div><i className="fa-solid fa-ellipsis" /></div></div>
+                                <div className="chat__content__left_search"><input type="text" placeholder="Search Name" /><button className="chat__content__left_search_btn"><i className="fa-solid fa-magnifying-glass" /></button></div>
+                                <div className="chat__content__left_list">
+                                    {conversation.map((c, index) => (
+                                        <div key={index} onClick={() => setCurrentChat(c)}>
+                                            <Conversations conversation={c} currentUser={user} />
+                                        </div>
+                                    ))}
+
+                                </div>
+                            </div>
+                            {currentChat ?
+                                <>
+                                    <div className="chat__content__right_header">
+                                        <div className="chat__content__right_header">
+                                            <div className="chat__content__right_header_i">
+                                                <div className="chat__content__right_header_i_img"><img className="messageImg" src="https://photo-cms-tpo.zadn.vn/600x315/Uploaded/2022/uug-onattvnat/2021_09_26/ava-1-8785.jpg" alt="chatBox" /></div>
+                                                <div className="chat__content__right_header_i_n"><p>Justin Bieber</p></div>
+                                            </div>
+                                        </div>
+                                        {/* <div className="chat__content__right_ct"> */}
+                                        <div className="chatBoxTop">
+                                            {messages.map((m, index) => (
+                                                <div key={index} ref={scrollRef}>
+                                                    <Message message={m} own={m.sender === user._id ?? m.sender === trainer._id} />
+                                                </div>
+                                            ))}
+                                            {/* <div className="chatBoxBottom">
+                                                    <textarea value={newMessage} className="chatMessageInput" placeholder="write something..." onChange={(e) => { setNewMessage(e.target.value) }}></textarea>
+                                                    <button className="chatSubmitButton" onClick={handleSubmit}>Send</button>
+                                                </div> */}
+                                            <form onSubmit={handleSubmit} className="chat__content__right_typeChat">
+                                                <input type="text" value={newMessage} className="chatMessageInput" onChange={(e) => { setNewMessage(e.target.value) }} placeholder="Type a message here..." />
+                                                <button onClick={handleSubmit} ><i className="fa-solid fa-location-arrow" />Send</button>
+                                            </form>
+                                        </div>
+                                        {/* </div> */}
+
+                                    </div>
+                                </> : <span className="noCoversationText">Open conversation to start a chat.</span>}
+                        </div>
+                    </div>
+                    <div className="col-2 mt-3">
+                        <div className="chat__info">
+                            <div className="chat__info_img"><img src={user.avatar ?? trainer.avatar} alt="avatarmaster" style={{ margin: "0 auto" }} /></div>
+                            <p>{user.name ?? trainer.name}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </>
     )
 }

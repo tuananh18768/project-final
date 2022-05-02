@@ -1,47 +1,54 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 img {
-  display: block;
-  width: 100%;
-  hyphens: auto;
+    display: block;
+    width: 100%;
+    hyphens: auto;
 }
 
 body {
-  font-family: "Poppins", sans-serif;
-  font-weight: 300;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    height: 100%;
 }
 
 a,
 a:hover {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 ul {
-  list-style: none;
+    list-style: none;
 }
 
 button {
-  border: none;
-  outline: none;
-  cursor: pointer;
+    border: none;
+    outline: none;
+    cursor: pointer;
 }
+
 .carousel-item {
-  height: 400px;
+    height: 400px;
 }
+
 @media (min-width: 1200px) {
-  .container {
-    max-width: 1330px;
-  }
+    .container {
+        max-width: 1330px;
+    }
 }
+
 .content__type {
-  padding: 0 20px;
-  background-color: #fafafa;
+    padding: 0 20px;
+    background-color: #fafafa;
 }
+
+
 /* Header */
+
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;500;700&display=swap");
 @import url("./components/Body/auth/auth.css");
 @import url("./components/Body/Profile/profile.css");

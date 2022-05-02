@@ -5,7 +5,7 @@ import CoursesBody from '../../CoursesBody/CoursesBody'
 import Footer from '../../Footer/Footer'
 export default function Content() {
   return (
-    <div className="content__type">
+    <div className="content__type container" >
       <Banner />
       <Catergory />
       <CoursesBody />

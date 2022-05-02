@@ -30,7 +30,7 @@ export default function Body() {
   const auth = useSelector(state => state.auth)
   const { isAdmin, isUser, isTrainer } = auth
   return (
-    <main className="container">
+    <main>
       <Switch>
         <Route path="/login" component={isUser || isTrainer ? NotFound : Login} exact />
         <Route path="/login/user" component={isUser ? NotFound : LoginUser} exact />
@@ -57,6 +57,7 @@ export default function Body() {
         <Route path="/" component={Content} exact />
       </Switch>
     </main>
+
 
   )
 }

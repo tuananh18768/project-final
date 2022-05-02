@@ -256,6 +256,18 @@ const userController = {
             return res.status(500).json({ msg: error.message });
         }
     },
+    getObjCate: async(req, res) => {
+        try {
+            let tutorialAll = await Tutorial.find();
+
+            const tutorialObj = tutorialAll.filter((tutorial) => {
+                return tutorial.category.toString() === req.params.id.toString();
+            });
+            res.status(200).json(tutorialObj);
+        } catch (error) {
+            return res.status(500).json({ msg: error.message });
+        }
+    },
     getAllTutorial: async(req, res) => {
         try {
             const data = await Tutorial.find();

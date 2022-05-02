@@ -7,9 +7,9 @@ import style from "./Trainer/trainer.module.css"
 export default function CoursesBody() {
     return (
         <>
-            <div className="row">
+            {/* <div className="row">
                 <CoursesItem />
-            </div>
+            </div> */}
             <div className={style.trainer}>
                 <h4>Giảng viên tiêu biểu</h4>
                 <div className="row">

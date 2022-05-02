@@ -32,6 +32,8 @@ router.put("/learning_check/:name", auth, userController.checkCoursesDone);
 
 router.get("/getALl_cate", userController.getAllCate);
 
+router.get("/getObj_cate/:id", userController.getObjCate);
+
 router.get("/getAll_tutorial", userController.getAllTutorial);
 
 router.get(

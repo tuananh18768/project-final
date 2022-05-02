@@ -36,9 +36,13 @@ export default function Conversations({ conversation, currentUser }) {
     }, [currentUser, conversation, tokenUser, tokenTrainer])
     // console.log(user)
     return (
-        <div className="conversation">
-            <img className="conversationImg" src={user?.avatar} alt="avatar" />
-            <span className="conversationName">{user?.name}</span>
+        // <div className="conversation">
+        //     <img className="conversationImg" src={user?.avatar} alt="avatar" />
+        //     <span className="conversationName">{user?.name}</span>
+        // </div>
+        <div className="chat__content__left_list_item">
+            <div className="chat__content__left_list_item_img"><img src={user?.avatar} alt="friendChat" /></div>
+            <div className="chat__content__left_list_item_img_n"><p>{user?.name}</p></div>
         </div>
     )
 }

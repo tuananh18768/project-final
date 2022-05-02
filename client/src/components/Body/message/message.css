@@ -1,4 +1,4 @@
-.message {
+/* .message {
     display: flex;
     flex-direction: column;
     margin-top: 20px;
@@ -35,4 +35,12 @@
 .message.own .messageText {
     background-color: rgb(226, 224, 224);
     color: black;
+} */
+
+.messageImg {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
 }
