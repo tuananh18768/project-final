@@ -37,35 +37,42 @@ export default function CheckBody() {
   }
   console.log(data);
   return (
-    <div>
-      <div className="user-top">
-        <div className="name-user">
-          <span>Thành viên: Bạch Tuấn Anh</span>
-        </div>
-        <div className="course">
-          <div className="coure-item">
-            <i className="fa fa-book" />
-            <Link to="/courseOwner">Khóa Học</Link>
+    <div className="row checkBody_mains">
+      <div className="col col-lg-1">
+        <div className="chat__wrapicon">
+          <div className="chat__icon" style={{ transform: 'translate(0 ,-30px)' }}>
+            <Link to="/">
+              <i class="fa-solid fa-house-chimney"></i>
+            </Link>
           </div>
-          <div className="coure-item">
-            <i className="fa fa-user" />
-            <Link to="/profile/user">Hồ sơ cá nhân</Link>
+          <div className="chat__icon">
+            <Link to="/courseOwner">
+              <i className="fa fa-book" />
+            </Link>
           </div>
-          <div className="coure-item">
-            <i className="fa fa-book" />
-            <Link to="/favorite">Yêu Thích</Link>
+          <div className="chat__icon">
+            <Link to="favorite">
+              <i class="fa-solid fa-heart"></i>
+            </Link>
           </div>
-          <div className="coure-item">
-            <i className="fa fa-search-plus" />
-            <Link to="/discovery">Khám Phá</Link>
+          <div className="chat__icon">
+            <Link to="discovery">
+              <i className="fa fa-search-plus" />
+            </Link>
           </div>
-          <div className="coure-item">
-            <i className="fa fa-plus" />
-            <Link to="/checkBody">Tình trạng sức khỏe</Link>
+          <div className="chat__icon">
+            <Link to="checkBody">
+              <i className="fa fa-plus" />
+            </Link>
+          </div>
+          <div className="chat__icon">
+            <Link to="/messenger">
+              <i class="fa-brands fa-facebook-messenger"></i>
+            </Link>
           </div>
         </div>
       </div>
-      <div className="backGroundCheck">
+      <div className="backGroundCheck col-11">
         <div className="check__content">
           <div className="check__content__header">
             <h4>Đo tình trạng sức khỏe</h4>

@@ -83,18 +83,32 @@
 
 .chat {
     background-color: #2056be;
-    padding: 10px;
-    height: 700px;
+    padding: 20px;
+    height: 750px;
 }
 
 .chat__icon {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     cursor: pointer;
+}
+
+.chat__icon a {
+    padding: 15px;
+    border-radius: 5px;
+    transition: all 0.2s;
+}
+
+.chat__icon a:hover {
+    background-color: rgb(54, 59, 55);
+}
+
+.chat__icon a:hover i {
+    color: rgb(24, 124, 49)
 }
 
 .chat__icon i {
     color: white;
-    font-size: 20px;
+    font-size: 22px;
 }
 
 .chat__wrapicon {
@@ -279,6 +293,7 @@
 .chat__content__right_typeChat {
     display: flex;
     margin-bottom: 10px;
+    width: 95%;
 }
 
 .chat__content__right_typeChat input {
@@ -323,4 +338,11 @@
     height: 500px;
     overflow-y: scroll;
     padding-right: 10px;
+}
+
+.noCoversationText {
+    top: 10%;
+    font-size: 50px;
+    color: rgb(113, 112, 112);
+    margin-left: 20px;
 }

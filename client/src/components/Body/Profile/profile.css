@@ -45,12 +45,15 @@ body {
 .user-bottom {
     width: 88%;
     margin: 30px auto 0;
+    background-color: #fff;
+    padding: 0;
 }
 
 .user-content {
     margin-top: 20px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    margin: 20px 0 20px 0;
 }
 
 .user-left {
@@ -63,6 +66,10 @@ body {
     width: 400px;
     height: 380px;
     border-radius: 50%;
+}
+
+.user-right {
+    margin-right: 35px
 }
 
 .user-address {
@@ -285,4 +292,10 @@ textarea {
     gap: 50px;
     justify-content: space-around;
     font-size: 25px;
+}
+
+.profile__user__main {
+    background-color: #2056be;
+    padding: 20px;
+    margin: 0;
 }

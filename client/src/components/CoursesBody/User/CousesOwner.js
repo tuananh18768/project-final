@@ -48,8 +48,47 @@ export default function CousesOwner() {
           </div>
         </div>
       </div> */}
-      <div className="backGoundCourses">
-        <div className="courses__owner_content">
+      <div className="backGoundCourses row">
+        <div className="col col-lg-1">
+          <div className="chat__wrapicon">
+            <div className="chat__icon" style={{ transform: 'translate(0 ,-140px)' }}>
+              <Link to="/">
+                <i class="fa-solid fa-house-chimney"></i>
+              </Link>
+            </div>
+            <div className="chat__icon">
+              <Link to="/courseOwner">
+                <i className="fa fa-book" />
+              </Link>
+            </div>
+            <div className="chat__icon">
+              <Link to="/favorite">
+                <i class="fa-solid fa-heart"></i>
+              </Link>
+            </div>
+            <div className="chat__icon">
+              <Link to="/discovery">
+                <i className="fa fa-search-plus" />
+              </Link>
+            </div>
+            <div className="chat__icon">
+              <Link to="/checkBody">
+                <i className="fa fa-plus" />
+              </Link>
+            </div>
+            <div className="chat__icon">
+              <Link to="messenger">
+                <i class="fa-brands fa-facebook-messenger"></i>
+              </Link>
+            </div>
+            {/* <div className="chat__icon">
+              <Link>
+              <i className="fa fa-plus" />
+              </Link>
+            </div> */}
+          </div>
+        </div>
+        <div className="courses__owner_content col-11">
           <div className="search">
             <input type="text" />
             <button className="btn btn-primary">Tìm kiếm</button>
@@ -58,16 +97,16 @@ export default function CousesOwner() {
             <div className="row">
               {listRegistedUser.map((course, index) => {
                 return <div className="col-3" key={index}>
-                  <div className="card" style={{ width: "18rem" }}>
+                  <div className="card" style={{ width: "18rem", marginBottom: "155px" }}>
                     <img
                       style={{ height: "190px", objectFit: "cover" }}
                       src={course.avatarCourse}
                       className="card-img-top"
                       alt="..."
                     />
-                    <div className="card-body">
+                    <div className="card-body" style={{ padding: "10px" }}>
                       <h5 className="card-title">{course.nameCourse}</h5>
-                      <p className="card-text">{course?.desCourse?.length > 30 ? course?.desCourse.slice(0, 80) + "..." : course?.desCourse}</p>
+                      <p style={{ minHeight: "75px" }} className="card-text">{course?.desCourse?.length > 30 ? course?.desCourse.slice(0, 80) + "..." : course?.desCourse}</p>
                       <Link to={`courses/${course.courseLinkName}`}>
                         <button className={style.course__join}>Tham gia khoá học</button>
                       </Link>

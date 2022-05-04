@@ -1,5 +1,11 @@
+.checkBody_mains {
+    background-color: #2056be;
+    padding: 10px;
+    margin: 0;
+}
+
 .check__content {
-    width: 80%;
+    width: 95%;
     margin: 0 auto;
 }
 

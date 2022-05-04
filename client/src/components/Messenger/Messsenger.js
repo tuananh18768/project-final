@@ -138,12 +138,44 @@ export default function Messsenger() {
                 </div>
             </div> */}
             <div className="chat container" style={{ maxWidth: '100%' }}>
-                <div className="row">
+                <div className="row" style={{ margin: 0 }}>
                     <div className="col col-lg-1">
                         <div className="chat__wrapicon">
-                            <div className="chat__icon"><i className="fa-regular fa-message" /></div>
-                            <div className="chat__icon"><i className="fa-regular fa-bell" /></div>
-                            <div className="chat__icon"><i className="fa-solid fa-gear" /></div>
+                            <div className="chat__icon" style={{ transform: 'translate(0 ,-30px)' }}>
+                                <Link to="/">
+                                    <i class="fa-solid fa-house-chimney"></i>
+                                </Link>
+                            </div>
+                            <div className="chat__icon">
+                                <Link to="/courseOwner">
+                                    <i className="fa fa-book" />
+                                </Link>
+                            </div>
+                            <div className="chat__icon">
+                                <Link to="favorite">
+                                    <i class="fa-solid fa-heart"></i>
+                                </Link>
+                            </div>
+                            <div className="chat__icon">
+                                <Link to="discovery">
+                                    <i className="fa fa-search-plus" />
+                                </Link>
+                            </div>
+                            <div className="chat__icon">
+                                <Link to="checkBody">
+                                    <i className="fa fa-plus" />
+                                </Link>
+                            </div>
+                            <div className="chat__icon">
+                                <Link to="/messenger">
+                                    <i class="fa-brands fa-facebook-messenger"></i>
+                                </Link>
+                            </div>
+                            {/* <div className="chat__icon">
+              <Link>
+              <i className="fa fa-plus" />
+              </Link>
+            </div> */}
                         </div>
                     </div>
                     <div className="col-9 mt-3">
@@ -180,11 +212,11 @@ export default function Messsenger() {
                                                     <textarea value={newMessage} className="chatMessageInput" placeholder="write something..." onChange={(e) => { setNewMessage(e.target.value) }}></textarea>
                                                     <button className="chatSubmitButton" onClick={handleSubmit}>Send</button>
                                                 </div> */}
-                                            <form onSubmit={handleSubmit} className="chat__content__right_typeChat">
-                                                <input type="text" value={newMessage} className="chatMessageInput" onChange={(e) => { setNewMessage(e.target.value) }} placeholder="Type a message here..." />
-                                                <button onClick={handleSubmit} ><i className="fa-solid fa-location-arrow" />Send</button>
-                                            </form>
                                         </div>
+                                        <form onSubmit={handleSubmit} className="chat__content__right_typeChat">
+                                            <input type="text" value={newMessage} className="chatMessageInput" onChange={(e) => { setNewMessage(e.target.value) }} placeholder="Type a message here..." />
+                                            <button onClick={handleSubmit} ><i className="fa-solid fa-location-arrow" />Send</button>
+                                        </form>
                                         {/* </div> */}
 
                                     </div>
