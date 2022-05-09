@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from 'react-redux'
@@ -35,7 +35,10 @@ export default function CheckBody() {
       console.log(error)
     }
   }
-  console.log(data);
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   return (
     <div className="row checkBody_mains">
       <div className="col col-lg-1">

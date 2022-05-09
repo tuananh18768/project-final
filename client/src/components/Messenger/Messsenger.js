@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import { io } from 'socket.io-client'
+import Swal from "sweetalert2";
 
 export default function Messsenger() {
     const [conversation, setConversation] = useState([])
@@ -15,6 +16,11 @@ export default function Messsenger() {
     const [newMessage, setNewMessage] = useState("")
     const [arrivalMessage, setArrivalMessage] = useState(null)
     const [onlineUser, setOnlineUser] = useState([])
+    const [loadData, setLoadData] = useState(0);
+    const token = useSelector(state => state.token)
+    const { tokenUser, tokenTrainer } = token
+
+
     const auth = useSelector(state => state.auth)
     const socket = useRef()
     const { user, trainer } = auth
@@ -51,7 +57,7 @@ export default function Messsenger() {
             }
         }
         getConversations()
-    }, [user._id, trainer._id])
+    }, [user._id, trainer._id, loadData])
     useEffect(() => {
         const getMesssages = async () => {
             try {
@@ -98,50 +104,56 @@ export default function Messsenger() {
         console.log(scrollRef.current)
     }, [messages])
 
-    console.log(currentChat)
+    useEffect(() => {
+        scrollRef.current?.scrollTo(0, 0)
+    }, [])
+    const handleDelete = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const res = await axios.delete(`/user/delete_chat/${id}`, {
+                        headers: {
+                            Authorization: tokenUser,
+                            "Content-Type":
+                                "multipart/form-data; boundary=<calculated when request is sent>",
+                        },
+                    });
+                    Swal.fire("Deleted!", res.data.msg, "success").then((confirm) => {
+                        if (confirm.isConfirmed) {
+                            setLoadData(Date.now());
+                        }
+                    });
+                } catch (error) {
+                    Swal.fire({
+                        title: "Error!",
+                        html: error.response.data.msg,
+                        icon: "error",
+                        confirmButtonText: "OK",
+                    }).then((confirm) => {
+                        if (confirm.isConfirmed) {
+                            setLoadData(Date.now());
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     return (
         <>
-
-            {/* <div className="messenger">
-                <div className="chatMenu">
-                    <div className="chatMenuWrapper">
-                        <input type="text" placeholder='Search for friends' className="chatMenuInput" />
-                        {conversation.map((c, index) => (
-                            <div key={index} onClick={() => setCurrentChat(c)}>
-                                <Conversations conversation={c} currentUser={user} />
-                            </div>
-                        ))}
-                    </div>
-                </div>
-                <div className="chatBox">
-                    <div className="chatBoxWrapper">
-                        {currentChat ?
-                            <>
-                                <div className="chatBoxTop">
-                                    {messages.map((m, index) => (
-                                        <div key={index} ref={scrollRef}>
-                                            <Message message={m} own={m.sender === user._id ?? m.sender === trainer._id} />
-                                        </div>
-                                    ))}
-                                </div>
-                                <div className="chatBoxBottom">
-                                    <textarea value={newMessage} className="chatMessageInput" placeholder="write something..." onChange={(e) => { setNewMessage(e.target.value) }}></textarea>
-                                    <button className="chatSubmitButton" onClick={handleSubmit}>Send</button>
-                                </div>
-                            </> : <span className="noCoversationText">Open conversation to start a chat.</span>}
-                    </div>
-                </div>
-                <div className="chatOnline">
-                    <div className="chatOnlineWrapper">
-                        <ChatOnline onlineUser={onlineUser} currentId={user._id || trainer._id} setCurrentChat={setCurrentChat} />
-                    </div>
-                </div>
-            </div> */}
-            <div className="chat container" style={{ maxWidth: '100%' }}>
+            <div className="chat " style={{ maxWidth: '100%' }}>
                 <div className="row" style={{ margin: 0 }}>
                     <div className="col col-lg-1">
                         <div className="chat__wrapicon">
-                            <div className="chat__icon" style={{ transform: 'translate(0 ,-30px)' }}>
+                            <div className="chat__icon" style={{ transform: 'translate(0 ,-140px)' }}>
                                 <Link to="/">
                                     <i class="fa-solid fa-house-chimney"></i>
                                 </Link>
@@ -171,11 +183,6 @@ export default function Messsenger() {
                                     <i class="fa-brands fa-facebook-messenger"></i>
                                 </Link>
                             </div>
-                            {/* <div className="chat__icon">
-              <Link>
-              <i className="fa fa-plus" />
-              </Link>
-            </div> */}
                         </div>
                     </div>
                     <div className="col-9 mt-3">
@@ -186,7 +193,7 @@ export default function Messsenger() {
                                 <div className="chat__content__left_list">
                                     {conversation.map((c, index) => (
                                         <div key={index} onClick={() => setCurrentChat(c)}>
-                                            <Conversations conversation={c} currentUser={user} />
+                                            <Conversations handleDelete={handleDelete} conversation={c} currentUser={user} />
                                         </div>
                                     ))}
 
@@ -202,7 +209,7 @@ export default function Messsenger() {
                                             </div>
                                         </div>
                                         {/* <div className="chat__content__right_ct"> */}
-                                        <div className="chatBoxTop">
+                                        <div className="chatBoxTop" >
                                             {messages.map((m, index) => (
                                                 <div key={index} ref={scrollRef}>
                                                     <Message message={m} own={m.sender === user._id ?? m.sender === trainer._id} />

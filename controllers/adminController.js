@@ -10,6 +10,9 @@ const Categories = require("../models/catergories");
 const Discovery = require("../models/discovery");
 const NewPostDiscovery = require("../models/newPostDiscovery");
 const BmiModel = require("../models/bmiModel");
+const Tutorial = require("../models/tutorialModel");
+const RegisterTutorial = require("../models/registerCourseModel");
+const Course = require("../models/coursesModel");
 
 const { CLIENT_URL } = process.env;
 const userController = {
@@ -66,6 +69,32 @@ const userController = {
             });
             await newUser.save();
             res.json({ msg: "Account has been activated!" });
+        } catch (err) {
+            return res.status(500).json({ msg: err.message });
+        }
+    },
+    activateEmailTrainer: async(req, res) => {
+        try {
+            const { activation_token } = req.body;
+            const user = jwt.verify(
+                activation_token,
+                process.env.ACTIVATION_TOKEN_SECRET
+            );
+            const { name, email, password, experience, skills, graduate } = user;
+            const check = await Trainers.findOne({ email });
+            if (check)
+                return res.status(400).json({ msg: "This email is alread exits." });
+
+            const newUser = new Trainers({
+                name,
+                email,
+                password,
+                experience,
+                skills,
+                graduate,
+            });
+            await newUser.save();
+            res.json({ msg: "Account trainer has been activated!" });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
@@ -179,6 +208,32 @@ const userController = {
             res.json({ msg: "Update successfully" });
         } catch (error) {
             return res.status(500).json({ msg: error.message });
+        }
+    },
+    updatePasswordTrainer: async(req, res) => {
+        try {
+            const { password } = req.body;
+            const passwordHash = await bcrypt.hash(password, 12);
+
+            await Trainers.findOneAndUpdate({ _id: req.params.id }, {
+                password: passwordHash,
+            });
+            res.json({ msg: "Password successfully changed!" });
+        } catch (err) {
+            return res.status(500).json({ msg: err.message });
+        }
+    },
+    updatePasswordUser: async(req, res) => {
+        try {
+            const { password } = req.body;
+            const passwordHash = await bcrypt.hash(password, 12);
+
+            await Users.findOneAndUpdate({ _id: req.params.id }, {
+                password: passwordHash,
+            });
+            res.json({ msg: "Password successfully changed!" });
+        } catch (err) {
+            return res.status(500).json({ msg: err.message });
         }
     },
     updateUserRole: async(req, res) => {
@@ -326,10 +381,58 @@ const userController = {
             const user = await Users.find();
             const trainer = await Trainers.find();
             const category = await Category.find();
+            const tutorial = await Tutorial.find();
+            let allRegister = await RegisterTutorial.find();
+
+            let dataTrainer = await Promise.all(
+                trainer.map(async(e) => {
+                    const tutorialTrainer = await Tutorial.find({ trainer_id: e._id });
+                    const courses = await Course.find({ trainer_id: e._id });
+                    return {...e._doc, tutorialTrainer, courses };
+                })
+            );
+
+            let dataTutorial = await Promise.all(
+                tutorial.map(async(e) => {
+                    const courses = await Course.find({ tutorials: e._id });
+                    return {...e._doc, courses };
+                })
+            );
+
+            let dataCate = await Promise.all(
+                category.map(async(e) => {
+                    const cateTutorial = await Tutorial.find({ category: e._id });
+                    return {...e._doc, cateTutorial };
+                })
+            );
+
+            const uniqueIds = [];
+            const dataRegister = allRegister.filter((element) => {
+                const isDuplicate = uniqueIds.includes(element.users.toString());
+
+                if (!isDuplicate) {
+                    uniqueIds.push(element.users.toString());
+
+                    return true;
+                }
+
+                return false;
+            });
+
+            let dataLearn = await Promise.all(
+                user.map(async(e) => {
+                    const cateTutorial = await RegisterTutorial.find({ users: e._id });
+                    return {...e._doc, cateTutorial };
+                })
+            );
+
             const dashboard = {
-                user: user,
-                trainer: trainer,
-                category: category,
+                user,
+                dataTrainer,
+                dataCate,
+                dataTutorial,
+                dataLearn,
+                dataRegister,
             };
             res.status(200).json(dashboard);
         } catch (error) {

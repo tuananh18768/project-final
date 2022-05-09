@@ -1,0 +1,94 @@
+.form__login {
+    /* width: 30%;
+    margin: 50px auto 0; */
+    color: white;
+    position: relative;
+    background-color: black;
+}
+
+.form__login form {
+    width: 30%;
+    margin: 0 auto 0;
+}
+
+.form__top {
+    width: 30%;
+    margin: 10px auto 0;
+}
+
+.form__top h2 {
+    margin-bottom: 15px;
+}
+
+.form__top .btn__item button {
+    width: 450px;
+    height: 45px;
+    padding: 0;
+    font-size: 14px!important;
+    font-weight: 600!important;
+    border-radius: 20px!important;
+    text-align: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px #777!important;
+}
+
+.btn__facebook {
+    margin-bottom: 15px;
+}
+
+.btn__item {
+    margin: 0 auto;
+}
+
+.round {
+    font-size: 20px;
+    font-weight: 300;
+    margin-top: 60px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.form__item input {
+    background-color: #eee;
+    color: #111;
+    padding: 15px;
+    border-radius: 20px;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.missPass {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.missPass a {
+    text-decoration: none;
+}
+
+.missPass span {
+    color: yellow;
+}
+
+.btn-submit {
+    padding: 15px 0;
+    display: block;
+    width: 100%;
+    border-radius: 20px;
+    background-color: yellow;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.text {
+    text-align: center;
+}
+
+.text__login {
+    color: yellow;
+    margin-left: 10px;
+}

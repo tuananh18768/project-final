@@ -44,6 +44,7 @@
     overflow: hidden;
     z-index: 2;
     transition: all 0.5s;
+    margin-bottom: 15px;
 }
 
 .course__join::before {

@@ -8,6 +8,7 @@ const initialState = {
     isUser: false,
     isAdmin: false,
     isTrainer: false,
+    allTrainerView: [],
 };
 
 const authReducer = (state = initialState, action) => {
@@ -55,6 +56,13 @@ const authReducer = (state = initialState, action) => {
                 return {
                     ...state,
                     admin: action.payload.admin,
+                };
+            }
+        case ACTIONS.GET_ALL_TRAINER_VIEW:
+            {
+                return {
+                    ...state,
+                    allTrainerView: action.payload,
                 };
             }
         default:

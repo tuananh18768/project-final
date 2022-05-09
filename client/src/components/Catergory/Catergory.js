@@ -19,15 +19,6 @@ export default function Catergory() {
   useEffect(() => {
     return fetchAllCategory().then(res => dispatch(dispatchAllCategory(res)))
   }, [dispatch])
-  // useEffect(() => {
-  //   return fetchAllTutorial().then(res => dispatch(dispatchAllTutorial(res)))
-  // }, [dispatch])
-
-  // useEffect(() => {
-  //   if (tokenUser) {
-  //     fetchAllTutorialLogin(tokenUser).then(res => dispatch(dispatchAllTutorialLogin(res)))
-  //   }
-  // }, [dispatch, tokenUser])
   const handleClick = async (id) => {
     try {
       const res = await axios.get(`user/getObj_cate/${id}`)

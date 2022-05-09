@@ -1,23 +1,39 @@
 import React, { useEffect } from 'react'
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
-import { dispatchTutorialUserLike, fetchTutorialUserLike } from '../../../redux/actions/tutorialAction'
+import { dispatchTutorialUserLike, fetchTutorialUserLike, } from '../../../redux/actions/tutorialAction'
+import { fetchDiscovery, dispatchDiscovery } from '../../../redux/actions/discoveryAction'
 import style from '../course.module.css'
 
 export default function Favorite() {
     const tutorialUserLike = useSelector(state => state.tutorials)
     const token = useSelector(state => state.token)
+    const discoverys = useSelector(state => state.discovery)
+
     const { listLikeTutorial } = tutorialUserLike
     const { tokenUser } = token
+    const { listDiscovery } = discoverys
 
     const dispatch = useDispatch()
-    console.log(listLikeTutorial)
 
     useEffect(() => {
         if (tokenUser) {
             fetchTutorialUserLike(tokenUser).then(res => dispatch(dispatchTutorialUserLike(res)))
         }
     }, [tokenUser, dispatch])
+
+    useEffect(() => {
+        if (tokenUser) {
+            fetchDiscovery(tokenUser).then(res => dispatch(dispatchDiscovery(res)))
+        }
+    }, [tokenUser, dispatch])
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
+
+    console.log(listDiscovery)
     return (
         <div className="favorite__main row">
             <div className="col col-lg-1">
@@ -52,11 +68,6 @@ export default function Favorite() {
                             <i class="fa-brands fa-facebook-messenger"></i>
                         </Link>
                     </div>
-                    {/* <div className="chat__icon">
-              <Link>
-              <i className="fa fa-plus" />
-              </Link>
-            </div> */}
                 </div>
             </div>
             <div className="favorite__content col-11" style={{ padding: 0 }}>
@@ -64,28 +75,50 @@ export default function Favorite() {
                     <h3>Đang quan tâm</h3>
                 </div>
                 <div className="row mt-3" style={{ margin: 0 }}>
-                    <div className="col-4 item__left text-center">
+                    <div className="col-6 item__left text-center">
                         <h4>Khám Phá</h4>
-                    </div>
-                    <div className="col-8 item__right text-center">
-                        <h4>Đã quan tâm</h4>
-                        {listLikeTutorial.map((current, index) => {
-                            return <div className="borderFavorite" style={{ border: '1px solid black', padding: '10px', marginRight: 10, marginTop: 20 }} key={index}>
-                                <div className="row text-left">
-                                    <div className="col-3">
-                                        <img src={current.courseAvatar} style={{ width: 120, height: 120, objectFit: 'cover' }} alt="" />
+                        <div className="item__left__dis">
+                            {listDiscovery.map((current, index) => {
+                                return current?.tutorials?.map((e, index) => {
+                                    return <div className="borderFavorite" style={{ border: '1px solid black', padding: '10px', marginRight: 10, marginTop: 20 }} key={index}>
+                                        <div className="row text-left">
+                                            <div className="col-3">
+                                                <img src={e.avatar_couses} style={{ width: 120, height: 120, objectFit: 'cover' }} alt="" />
+                                            </div>
+                                            <div className="col-9">
+                                                <h4>{e.name}</h4>
+                                                <p>{e?.description?.length > 30 ? e?.description.slice(0, 50) + "..." : e?.description}</p>
+                                                <Link to={`courses/${e.linkName}`}>
+                                                    <button style={{ margin: 0 }} className={style.course__join}>Tham gia khoá học</button>
+                                                </Link>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="col-9">
-                                        <h4>{current.courseName}</h4>
-                                        <p>{current?.courseDes?.length > 30 ? current?.courseDes.slice(0, 50) + "..." : current?.courseDes}</p>
-                                        <Link to={`courses/${current.courseLinkName}`}>
-                                            <button style={{ margin: 0 }} className={style.course__join}>Tham gia khoá học</button>
-                                        </Link>
+                                })
+                            })}
+                        </div>
+
+                    </div>
+                    <div className="col-6 item__right text-center">
+                        <h4>Đã quan tâm</h4>
+                        <div className="item__left__dis">
+                            {listLikeTutorial.map((current, index) => {
+                                return <div className="borderFavorite" style={{ border: '1px solid black', padding: '10px', marginRight: 10, marginTop: 20 }} key={index}>
+                                    <div className="row text-left">
+                                        <div className="col-3">
+                                            <img src={current.courseAvatar} style={{ width: 120, height: 120, objectFit: 'cover' }} alt="" />
+                                        </div>
+                                        <div className="col-9">
+                                            <h4>{current.courseName}</h4>
+                                            <p>{current?.courseDes?.length > 30 ? current?.courseDes.slice(0, 50) + "..." : current?.courseDes}</p>
+                                            <Link to={`courses/${current.courseLinkName}`}>
+                                                <button style={{ margin: 0 }} className={style.course__join}>Tham gia khoá học</button>
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        })}
-
+                            })}
+                        </div>
                     </div>
                 </div>
             </div>

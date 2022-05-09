@@ -6,6 +6,8 @@ const jwt = require("jsonwebtoken");
 const sendMail = require("./sendMail");
 const sendMailAccept = require("./sendMailAccept");
 const Category = require("../models/catergories");
+const RegisterTutorial = require("../models/registerCourseModel");
+const User = require("../models/userAuth");
 
 const { CLIENT_URL } = process.env;
 
@@ -42,7 +44,7 @@ const trainerController = {
             };
 
             const activation_token = createActivationToken(newUser);
-            const url = `${CLIENT_URL}/trainer/activate/${activation_token}`;
+            const url = `${CLIENT_URL}/admin/activate/${activation_token}`;
 
             // sendMail(email, url, "Verify your email address")
             sendMailAccept(
@@ -129,7 +131,7 @@ const trainerController = {
                 return res.status(400).json({ msg: "This email dose not exits." });
 
             const access_token = createAccessToken({ id: user.id });
-            const url = `${CLIENT_URL}/user/reset/${access_token}`;
+            const url = `${CLIENT_URL}/trainer/reset/${access_token}`;
 
             sendMail(email, url, "Reset your password");
             res.json({ msg: "Re-send the password, please check your email." });
@@ -223,7 +225,7 @@ const trainerController = {
     },
     getAllTutorial: async(req, res) => {
         try {
-            const tutorial = await Tutorial.find();
+            const tutorial = await Tutorial.find({ trainer_id: req.user.id });
             let arrayTutorial = [];
             arrayTutorial = await Promise.all(
                 tutorial.map(async(current) => {
@@ -327,6 +329,86 @@ const trainerController = {
                 })
             );
             res.json(arrayCousesTutorial);
+        } catch (error) {
+            return res.status(500).json({ msg: error.message });
+        }
+    },
+    dashboard: async(req, res) => {
+        try {
+            const tutorials = await Tutorial.find({ trainer_id: req.user.id });
+            const cates = await Category.find();
+            const users = await User.find();
+            let allRegister = [];
+            let tutorialCate = [];
+            let cateNumber = [];
+
+            cateNumber = await Promise.all(
+                cates.map(async(current) => {
+                    const tutorial = await Tutorial.find({
+                        category: current._id,
+                        trainer_id: req.user.id,
+                    });
+                    return {...current._doc, tutorial };
+                })
+            );
+
+            tutorialCate = await Promise.all(
+                tutorials.map(async(current) => {
+                    const cate = await Category.findById(current.category);
+                    const courseObj = await Courses.find({ tutorials: current._id });
+                    allRegister = await RegisterTutorial.find({ courses: current._id });
+                    const userLike = users.map((e) => {
+                        let likeTutorial = {
+                            likes: "",
+                        };
+                        e.heart.find((user) => {
+                            if (user.toString() === current._id.toString()) {
+                                likeTutorial.likes = e._id;
+                            }
+                        });
+                        return likeTutorial;
+                    });
+                    const results = userLike.filter((element) => {
+                        if (Object.keys(element.likes).length !== 0) {
+                            return true;
+                        }
+
+                        return false;
+                    });
+                    const register = await RegisterTutorial.find({
+                        courses: current._id,
+                    });
+
+                    return {
+                        ...current._doc,
+                        category: cate.name,
+                        courseObj,
+                        register,
+                        results,
+                    };
+                })
+            );
+
+            const uniqueIds = [];
+
+            const dataRegister = allRegister.filter((element) => {
+                const isDuplicate = uniqueIds.includes(element.users.toString());
+
+                if (!isDuplicate) {
+                    uniqueIds.push(element.users.toString());
+
+                    return true;
+                }
+
+                return false;
+            });
+
+            const allData = {
+                cateNumber,
+                dataRegister,
+                tutorialCate,
+            };
+            res.status(200).json(allData);
         } catch (error) {
             return res.status(500).json({ msg: error.message });
         }

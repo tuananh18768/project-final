@@ -47,7 +47,7 @@ export default function CoursesItem({ allCate, objCate }) {
         <>
             {allCate.length > 0 && objCate.length <= 0 ?
                 allCate.map((current, index) => {
-                    return <div className="col-3" key={index}>
+                    return <div className="col-3 " style={{ marginBottom: 30 }} key={index}>
                         <div className={style.course__item} style={{ minHeight: "350px" }}>
                             <img src={current.avatar_couses} alt="index" />
                             <div className={style.course__body}>
@@ -67,7 +67,7 @@ export default function CoursesItem({ allCate, objCate }) {
                 :
                 allCate.length <= 0 && objCate.length > 0 ?
                     objCate.map((current, index) => {
-                        return <div className="col-3" key={index}>
+                        return <div className="col-3" style={{ marginBottom: 30 }} key={index}>
                             <div className={style.course__item} style={{ minHeight: "350px" }}>
                                 <img src={current.avatar_couses} alt="index" />
                                 <div className={style.course__body}>
@@ -86,7 +86,7 @@ export default function CoursesItem({ allCate, objCate }) {
                     :
                     !tokenUser ?
                         tutorialsUser.map((current, index) => {
-                            return <div className="col-3" key={index}>
+                            return <div className="col-3" style={{ marginBottom: 30 }} key={index}>
                                 <div className={style.course__item} style={{ minHeight: "350px" }}>
                                     <img src={current.avatar_couses} alt="index" />
                                     <div className={style.course__body}>
@@ -104,7 +104,7 @@ export default function CoursesItem({ allCate, objCate }) {
                         })
                         :
                         tutorialLoginUser.map((current, index) => {
-                            return <div className="col-3" key={index}>
+                            return <div className="col-3" style={{ marginBottom: 30 }} key={index}>
                                 <div className={style.course__item} style={{ minHeight: "350px" }}>
                                     <img src={current.avatar_couses} alt="index" />
                                     <div className={style.course__body}>

@@ -7,6 +7,7 @@ import tutorials from "./tutorialReducer";
 import courses from "./coursesReducer";
 import registerCourses from "./registerReducer";
 import discovery from "./discoveryReducer";
+import dashboard from "./dashboardReducer";
 
 export default combineReducers({
     auth,
@@ -17,4 +18,5 @@ export default combineReducers({
     courses,
     registerCourses,
     discovery,
+    dashboard,
 });

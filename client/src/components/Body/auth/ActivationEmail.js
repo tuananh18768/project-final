@@ -1,32 +1,30 @@
 import React, { useEffect, useState } from 'react'
-import {useParams} from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import axios from 'axios'
-import {showErrMsg, showSuccessMsg} from '../../utils/Notification/Notification'
-function ActivationEmail() {
-    const {activation_token} = useParams('')
-    const [err, setErr] = useState('')
-    const [success, setSuccess] = useState('')
+import { errorNotifi, successNotifi } from '../../utils/Notification/Notification'
 
-    useEffect(()=>{
-        if(activation_token){
-            const activationEmails = async ()=>{
+function ActivationEmail() {
+    const { activation_token } = useParams('')
+
+
+    useEffect(() => {
+        if (activation_token) {
+            const activationEmails = async () => {
                 try {
-                    const res = await axios.post('/user/activation', {activation_token})
-                    setSuccess(res.data.msg)
+                    const res = await axios.post('/user/activation', { activation_token })
+                    successNotifi(res.data.msg)
                 } catch (err) {
-                    err.response.data.msg && setErr(err.response.data.msg)
+                    err.response.data.msg && errorNotifi(err.response.data.msg)
                 }
             }
             activationEmails()
         }
     }, [activation_token])
     console.log(useParams())
-  return (
-    <div>
-        {err && showErrMsg(err)}
-        {success && showSuccessMsg(success)}
-    </div>
-  )
+    return (
+        <div>
+        </div>
+    )
 }
 
 export default ActivationEmail

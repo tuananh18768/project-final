@@ -9,10 +9,18 @@ export const showSuccessMsg = (msg) => {
     return <div className="successMsg">{msg}</div>
 }
 export const errorNotifi = (element) => {
-    return  Swal.fire({
+    return Swal.fire({
         title: 'Error!',
         html: element,
         icon: 'error',
+        confirmButtonText: 'OK'
+    })
+}
+export const successNotifi = (element) => {
+    return Swal.fire({
+        title: 'success!',
+        html: element,
+        icon: 'success',
         confirmButtonText: 'OK'
     })
 }

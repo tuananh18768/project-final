@@ -21,3 +21,16 @@
 .conversationName {
     font-weight: 500;
 }
+
+.chat__delete {
+    font-size: 22px;
+    transition: all 0.5s;
+}
+
+.chat__delete button {
+    background-color: transparent;
+}
+
+.chat__delete button:hover i {
+    color: red;
+}

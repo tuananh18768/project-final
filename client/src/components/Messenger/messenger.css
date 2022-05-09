@@ -83,7 +83,8 @@
 
 .chat {
     background-color: #2056be;
-    padding: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
     height: 750px;
 }
 
@@ -231,7 +232,7 @@
 .me {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 30px;
+    margin: 20px 0;
 }
 
 .me_ct {
@@ -263,7 +264,7 @@
 .other {
     display: flex;
     justify-content: flex-start;
-    margin-bottom: 30px;
+    margin: 20px 0;
 }
 
 .other_ct {

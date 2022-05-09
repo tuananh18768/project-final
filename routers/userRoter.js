@@ -66,4 +66,10 @@ router.get("/add_likeDiscovery", auth, userController.listTopicDiscovery);
 
 router.post("/check_body", auth, userController.checkBody);
 
+router.delete("/delete_chat/:id", auth, userController.deleteChat);
+
+router.post("/google_login", userController.googleLogin);
+
+router.post("/facebook_login", userController.facebookLogin);
+
 module.exports = router;

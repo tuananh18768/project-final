@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import {isEmail} from '../../utils/validation/validation'
-import {showErrMsg, showSuccessMsg} from '../../utils/Notification/Notification'
+import { isEmail } from '../../utils/validation/validation'
+import { showErrMsg, showSuccessMsg } from '../../utils/Notification/Notification'
 
 const initialState = {
     email: '',
@@ -10,10 +10,10 @@ const initialState = {
 }
 function ForgotPassword() {
     const [data, setData] = useState(initialState)
-    const {email, error, success} = data
-    
-    const handleChangeInput = (e)=>{
-        const {name, value} = e.target
+    const { email, error, success } = data
+
+    const handleChangeInput = (e) => {
+        const { name, value } = e.target
         setData({
             ...data,
             [name]: value,
@@ -22,30 +22,30 @@ function ForgotPassword() {
         })
         console.log(data)
     }
-    const forgotPassword = async () =>{
-        if(!isEmail(email)){
-            return setData({...data, error: 'Invalid email', success: ''})
+    const forgotPassword = async () => {
+        if (!isEmail(email)) {
+            return setData({ ...data, error: 'Invalid email', success: '' })
         }
         try {
-            const res = await axios.post('/user/forgot', {email})
-            return setData({...data, error: '', success: res.data.msg})
+            const res = await axios.post('/user/forgot', { email })
+            return setData({ ...data, error: '', success: res.data.msg })
         } catch (error) {
-            error.response.data.msg &&  
-             setData({...data, error: error.response.data.msg, success: ''})
+            error.response.data.msg &&
+                setData({ ...data, error: error.response.data.msg, success: '' })
         }
     }
-  return (
-    <div className="fg_pass">
-        <h2>Forgot your Password?</h2>
+    return (
+        <div className="fg_pass">
+            <h2>Forgot your Password?</h2>
             {error && showErrMsg(error)}
             {success && showSuccessMsg(success)}
-        <div className="row">
-            <label htmlFor="email">Enter your email address</label>
-            <input type="email" name="email" value={email} id="email" onChange={(e)=>{handleChangeInput(e)}}/>
-            <button onClick={(e)=>{forgotPassword(e)}}>Verify your email</button>
+            <div className="row">
+                <label htmlFor="email">Enter your email address</label>
+                <input type="email" name="email" value={email} id="email" onChange={(e) => { handleChangeInput(e) }} />
+                <button onClick={(e) => { forgotPassword(e) }}>Verify your email</button>
+            </div>
         </div>
-    </div>
-  )
+    )
 }
 
 export default ForgotPassword

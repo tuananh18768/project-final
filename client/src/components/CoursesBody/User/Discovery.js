@@ -36,6 +36,11 @@ export default function Discovery() {
 
         }
     }
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+    console.log(listDiscovery)
     return (
         <div className="discovery__main row">
             <div className="col col-lg-1">

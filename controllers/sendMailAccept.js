@@ -1,48 +1,48 @@
-const nodemailer = require('nodemailer');
-const { google } = require('googleapis');
+const nodemailer = require("nodemailer");
+const { google } = require("googleapis");
 const { OAuth2 } = google.auth;
-const OAUTH_PLAYGROUND = 'https://developers.google.com/oauthplayground'
+const OAUTH_PLAYGROUND = "https://developers.google.com/oauthplayground";
 
 const {
     MAILING_SERVICE_CLIENT_ID,
     MAILING_SERVICE_CLIENT_SECRET,
     MAILING_SERVICE_CLIENT_REFRESH_TOKEN,
     SENDER_EMAIL_ADDRESS,
-    SENDER_EMAIL_ACCEPT
-} = process.env
+    SENDER_EMAIL_ACCEPT,
+} = process.env;
 
 const oauth2Clinet = new OAuth2(
     MAILING_SERVICE_CLIENT_ID,
     MAILING_SERVICE_CLIENT_SECRET,
     MAILING_SERVICE_CLIENT_REFRESH_TOKEN,
     OAUTH_PLAYGROUND
-)
+);
 
 //send mail
 const sendEmailAccept = (url, txt, user, experience, skills, graduate) => {
     oauth2Clinet.setCredentials({
-        refresh_token: MAILING_SERVICE_CLIENT_REFRESH_TOKEN
-    })
-    const accessToken = oauth2Clinet.getAccessToken()
+        refresh_token: MAILING_SERVICE_CLIENT_REFRESH_TOKEN,
+    });
+    const accessToken = oauth2Clinet.getAccessToken();
     const smtpTransport = nodemailer.createTransport({
-        service: 'gmail',
+        service: "gmail",
         auth: {
-            type: 'OAuth2',
+            type: "OAuth2",
             user: SENDER_EMAIL_ADDRESS,
             clientId: MAILING_SERVICE_CLIENT_ID,
             clientSecret: MAILING_SERVICE_CLIENT_SECRET,
             refreshToken: MAILING_SERVICE_CLIENT_REFRESH_TOKEN,
-            accessToken
-        }
-    })
+            accessToken,
+        },
+    });
 
     const mailOptions = {
         from: SENDER_EMAIL_ADDRESS,
         to: SENDER_EMAIL_ACCEPT,
-        subject: "Courses Sytems",
+        subject: "Fitness system",
         html: `
             <div style="max-width: 700px; margin:auto; border: 10px solid #ddd; padding: 50px 20px; font-size: 110%;">
-                <h2 style="text-align: center; text-transform: uppercase;color: teal;">Welcome to the Courses System.</h2>
+                <h2 style="text-align: center; text-transform: uppercase;color: teal;">Welcome to the Fitness System.</h2>
                 <p style="color: red"> ${user} Accept join system.
                 </p>
                 <p style="color: brown"><span style="color: red">Experience:<span> ${experience}.
@@ -58,12 +58,12 @@ const sendEmailAccept = (url, txt, user, experience, skills, graduate) => {
             <div>${url}</div>
             </div>
             
-        `
-    }
+        `,
+    };
     smtpTransport.sendMail(mailOptions, (err, infor) => {
         if (err) return err;
-        return infor
-    })
-}
+        return infor;
+    });
+};
 
-module.exports = sendEmailAccept
+module.exports = sendEmailAccept;

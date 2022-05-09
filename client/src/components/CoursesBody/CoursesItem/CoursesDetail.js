@@ -5,6 +5,11 @@ import { fetchAllCoursesUser, dispatchAllCoursesUser } from '../../../redux/acti
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchAllTutorial, dispatchAllTutorial } from '../../../redux/actions/tutorialAction'
 import ReactPlayer from 'react-player';
+import style from '../course.module.css'
+import OwlCarousel from 'react-owl-carousel';
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import 'owl.carousel/dist/assets/owl.theme.default.css';
+import Swal from 'sweetalert2'
 
 export default function CoursesDetail() {
     const tutorialsUsers = useSelector(state => state.tutorials)
@@ -12,8 +17,7 @@ export default function CoursesDetail() {
     const token = useSelector(state => state.token)
     const couses = useSelector(state => state.courses)
 
-    const history = useHistory()
-    // const [hatutorial, setHaitutorial] = useState()
+
     const { tokenUser } = token
     const { coursesUser } = couses
     const { tutorialsUser } = tutorialsUsers
@@ -25,9 +29,10 @@ export default function CoursesDetail() {
     const { name } = useParams()
     const [textComment, setTextComment] = useState('')
     const [date, setDate] = useState(Date.now())
+    const [finish, setFinish] = useState(false)
+    const history = useHistory()
 
     const [paramId, setParamId] = useState()
-    // const { id } = useParams()
     const dispatch = useDispatch()
 
     const getObj = async () => {
@@ -35,48 +40,50 @@ export default function CoursesDetail() {
         for (let item = 0; item < coursesUser.length; item++) {
             if (!coursesUser[item].userLearn?.find(e => e.users.toString() === user._id.toString())) {
                 setObjCourses(coursesUser[item])
-                history.push({
-                    pathname: `/learning/${name}`,
-                    search: `?id=${coursesUser[item]._id}`,
-                })
-                const paramCourse = new URLSearchParams(window.location.search)
-                setParamId(paramCourse.get('id'))
                 break
+            }
+            if (coursesUser[coursesUser.length - 1].userLearn?.find(e => e.users.toString() === user._id.toString())) {
+                setFinish(true)
             }
         }
         setModal(obj)
     }
     useEffect(() => {
         fetchAllTutorial().then(res => dispatch(dispatchAllTutorial(res)))
-    }, [dispatch])
-    useEffect(() => {
-        setObjCourses({})
-        getObj()
-    }, [coursesUser, date])
+    }, [dispatch, date])
+
+
     useEffect(() => {
         if (tokenUser) {
             fetchAllCoursesUser(tokenUser, modal?._id).then(res => dispatch(dispatchAllCoursesUser(res)))
         }
-    }, [tokenUser, dispatch, modal])
+    }, [tokenUser, dispatch, modal, date])
 
     const handleChangeCourses = (id) => {
         const courseItem = coursesUser.find(e => e._id === id)
         setObjCourses(courseItem)
     }
-    const handleCheckDone = async () => {
+    const handleCheckDone = async (id) => {
         if (!check) {
             setCheck(true)
         }
-        console.log(check)
         if (check) {
             try {
-                await axios.put(`/user/done_courses/${paramId}`, {}, { headers: { authorization: tokenUser } })
-                window.location.href = 'learning/Bi-kip-luyen-vo-than-chuong'
+                await axios.put(`/user/done_courses/${id}`, {}, { headers: { authorization: tokenUser } })
+
+                // window.location.href = '/learning/Tap-co-tay-trong-30-ngay'
+                await getObj()
+                setDate(Date.now())
             } catch (error) {
                 console.log(error)
             }
         }
     }
+    useEffect(() => {
+        setObjCourses({})
+        getObj()
+        console.log('alo')
+    }, [coursesUser, date])
     const handleChangeComment = (e) => {
         const { value } = e.target
         setTextComment(value)
@@ -84,51 +91,67 @@ export default function CoursesDetail() {
     const handleComment = async (e) => {
         e.preventDefault()
         try {
-            const res = await axios.post(`/user/comment_tutorial/${name}`, { text: textComment }, { headers: { Authorization: tokenUser } })
+            await axios.post(`/user/comment_tutorial/${name}`, { text: textComment }, { headers: { Authorization: tokenUser } })
             setTextComment('')
             getObj()
             setDate(Date.now())
-            console.log(res)
         } catch (error) {
             console.log(error);
         }
     }
 
-    console.log(coursesUser)
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+    console.log(objCourses)
+    console.log(modal)
     return (
         <div>
+
             <div>
                 <div className="coursed">
                     <div aria-label="breadcrumb">
                         <ol className="breadcrumb">
-                            <li className="breadcrumb-item"><a href>Thiet ke</a></li>
-                            <li className="breadcrumb-item"><a href="#">Phan mem thiet ke</a></li>
-                            <li className="breadcrumb-item active" aria-current="page">Phan mem pho to shop</li>
+                            <li className="breadcrumb-item"><Link to="">Danh mục</Link></li>
+                            <li className="breadcrumb-item"><Link to="">{modal?.category}</Link></li>
+                            <li className="breadcrumb-item active" aria-current="page">{objCourses?.name}</li>
                         </ol>
                     </div>
                     <div className="videoandlist d-flex">
                         <div className="video">
-                            <ReactPlayer
+                            {objCourses.videoUrl ? <ReactPlayer
                                 url={objCourses.videoUrl}
                                 width="100%"
                                 height="450px"
                                 playing={true}
                                 controls={false}
-                            />
+                            /> :
+                                <div className="finishCourses">
+                                    <img src="https://e7.pngegg.com/pngimages/296/544/png-clipart-multicolored-congratulations-dunottar-school-youtube-competition-s-congratulations-icon-miscellaneous-text.png" alt="finish" />
+                                </div>
+                            }
+
                             <div className="video_title">
-                                <h3>{objCourses?.name}</h3>
-                                <input type="checkbox" checked={objCourses?.userLearn?.find(e => e.users.toString() === user._id.toString()) ? true : false} id="vehicle1" name="check_video" onClick={handleCheckDone} />
+                                {objCourses?.name ?
+                                    <h3>{objCourses?.name}</h3>
+                                    :
+                                    <h3 style={{ color: 'rgba(33, 216, 22, 0.8)' }}>Chúc mừng bạn đã hoàn thành xong khóa học</h3>
+                                }
+                                {objCourses?.userLearn &&
+                                    <input type="checkbox" checked={objCourses?.userLearn?.find(e => e.users.toString() === user._id.toString()) ? true : false} id="vehicle1" name="check_video" onClick={() => { handleCheckDone(objCourses._id) }} />
+                                }
+
                             </div>
                             <p>{objCourses?.description}</p>
                             <div className="additioninfo">
                                 <span><i className="fa-solid fa-clock" />14:28:16</span>
                                 <span><i className="fa-solid fa-caret-right" />71022</span>
                                 <span><i className="fa-solid fa-star" />4.7 </span>
-                                <span>Thời gian tạo: {objCourses?.createdAt}
-                                </span>
+                                <p>Thời gian tạo: {objCourses?.createdAt}
+                                </p>
                                 <span>Thời gian cập nhật: {objCourses?.updatedAt}</span>
-                                <span>Chia sẻ đánh giá của bạn
-                                </span>
+                                <p>Chia sẻ đánh giá của bạn
+                                </p>
                             </div>
                             <div className="muitab">
                                 <nav>
@@ -138,12 +161,29 @@ export default function CoursesDetail() {
                                     </div>
                                 </nav>
                                 <div className="tab-content" id="nav-tabContent">
-                                    <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">Placeholder content for the tab panel. This one relates to
-                                        the home tab. Takes you miles high, so high, 'cause she’s got that one international smile.
-                                        There's a stranger in my bed, there's a pounding in my head. Oh, no. In another life I would
-                                        make you stay. ‘Cause I, I’m capable of anything. Suiting up for my crowning battle. Used to
-                                        steal your parents' liquor and climb to the roof. Tone, tan fit and ready, turn it up cause
-                                        its gettin' heavy. Her love is like a drug. I guess that I forgot I had a choice.
+                                    <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                        <p className="my-4" style={{ fontWeight: "500" }}>{modal?.description}</p>
+                                        <h4>Lợi ích từ khóa học</h4>
+                                        {modal?.result?.map((current, index) => {
+                                            return <ul key={index}>
+                                                <li>
+                                                    <i className="fa-solid fa-circle-check mx-2"></i>
+                                                    {current}
+                                                </li>
+                                            </ul>
+                                        })}
+                                        <div className="my-5">
+                                            <h4>Giảng viên</h4>
+                                            <div className="inforTrainer">
+                                                <img src={modal?.trainer_id.avatar} alt="avatarTrainer" />
+                                                <div className="skill">
+                                                    <p className="name">{modal?.trainer_id.name}</p>
+                                                    <p className="flow"><i className="fa-solid fa-user-group"></i> {modal?.trainer_id.followings.length} Số người theo học</p>
+                                                    <p className="cetificate">{modal?.trainer_id.skills}</p>
+                                                    <p className="experience">{modal?.trainer_id.experience}</p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div className="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                                         <div className="div-commentItems">
@@ -151,8 +191,7 @@ export default function CoursesDetail() {
                                                 return <div key={index} className="commentItem d-flex mt-4">
                                                     <div><img className="imgC" src={comment.avatar} width="50px" height="50px" alt="index" /></div>
                                                     <div className="comment-content">
-                                                        <p>{comment.name} :
-                                                            {comment.text} </p>
+                                                        <p style={{ fontSize: 18, color: 'rgba(4, 59, 187, 0.8)' }}>{comment.name}: <span style={{ fontSize: 16, color: 'black' }}>{comment.text} </span></p>
                                                         {/* <p>TRẢ LỜI</p> */}
                                                     </div>
                                                 </div>
@@ -200,61 +239,27 @@ export default function CoursesDetail() {
                         </div>
                     </div>
                     <div className="coursesNext  mt-5">
-                        <h1>Sau khoá học này...</h1>
-                        <div className="d-flex mt-4">
-                            <div className="card mr-4 shadow " style={{ width: '18rem' }}>
-                                <img src className="card-img-top" alt="..." />
-                                <div className="card-body">
-                                    <h5 className="card-title">Card title</h5>
-                                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of
-                                        the card's content.</p>
-                                    <a href="#" className="btn btn-primary">Go somewhere</a>
+                        <h4>Sau khoá học này...</h4>
+
+                        <OwlCarousel className='owl-theme' items={4} loop margin={10} nav style={{ padding: "20px 0" }}>
+                            {tutorialsUser?.map((current, index) => {
+                                return <div className="item" key={index}>
+                                    <div className={style.course__item} style={{ minHeight: "350px" }}>
+                                        <img src={current.avatar_couses} alt="index" />
+                                        <div className={style.course__body}>
+                                            <h5 className={style.course__title}>{current.name}</h5>
+                                            <p style={{ minHeight: "55px" }} className={style.course__description}>{current?.description?.length > 30 ? current?.description.slice(0, 80) : current?.description}</p>
+                                            <Link to={`courses/${current.linkName}`}>
+                                                <button className={style.course__join}>Tham gia khoá học</button>
+                                            </Link>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="card mr-4 shadow" style={{ width: '18rem' }}>
-                                <img src="..." className="card-img-top" alt="..." />
-                                <div className="card-body">
-                                    <h5 className="card-title">Card title</h5>
-                                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of
-                                        the card's content.</p>
-                                    <a href="#" className="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                            <div className="card mr-4 shadow" style={{ width: '18rem' }}>
-                                <img src="..." className="card-img-top" alt="..." />
-                                <div className="card-body">
-                                    <h5 className="card-title">Card title</h5>
-                                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of
-                                        the card's content.</p>
-                                    <a href="#" className="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                            <div className="card mr-4 shadow" style={{ width: '18rem' }}>
-                                <img src="..." className="card-img-top" alt="..." />
-                                <div className="card-body">
-                                    <h5 className="card-title">Card title</h5>
-                                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of
-                                        the card's content.</p>
-                                    <a href="#" className="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                            <div className="card mr-4 shadow" style={{ width: '18rem' }}>
-                                <img src="..." className="card-img-top" alt="..." />
-                                <div className="card-body">
-                                    <h5 className="card-title">Card title</h5>
-                                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of
-                                        the card's content.</p>
-                                    <a href="#" className="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                        </div>
+                            })}
+                        </OwlCarousel>
                     </div>
                 </div>
-                <footer>
-                    <p>© 2021 Công ty TNHH Công Nghệ Giáo Dục Topica Việt Nam</p>
-                </footer>
             </div>
-
         </div>
     )
 }

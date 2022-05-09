@@ -8,6 +8,8 @@ router.post("/register", adminController.register);
 
 router.post("/activation", adminController.activateEmail);
 
+router.post("/activation_trainer", adminController.activateEmailTrainer);
+
 router.post("/login", adminController.login);
 
 router.post("/refresh_token", adminController.getAccessToken);
@@ -24,7 +26,20 @@ router.get("/all_trainer", auth, authAdmin, adminController.getAllTrainer);
 
 router.get("/logout", adminController.logout);
 
-router.patch("/update_infor", auth, adminController.updateInfor);
+router.patch("/update_infor", auth, authAdmin, adminController.updateInfor);
+
+router.patch(
+    "/update_passwordTrainer/:id",
+    auth,
+    authAdmin,
+    adminController.updatePasswordTrainer
+);
+router.patch(
+    "/update_passwordUser/:id",
+    auth,
+    authAdmin,
+    adminController.updatePasswordUser
+);
 
 // router.patch('/update_role/:id', auth, authAdmin, adminController.updateUserRole)
 

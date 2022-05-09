@@ -46,6 +46,10 @@ button {
     background-color: #fafafa;
 }
 
+.owl-carousel .owl-stage {
+    padding: 20px 0;
+}
+
 
 /* Header */
 

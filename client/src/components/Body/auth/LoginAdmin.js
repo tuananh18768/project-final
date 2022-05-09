@@ -36,34 +36,36 @@ export default function LoginAdmin() {
         }
     }
     return (
-        <div className="login_page">
-            <h2>Login</h2>
+        <div className="form__login" style={{ paddingTop: 40, paddingBottom: 100 }}>
             {error && showErrMsg(error)}
             {success && showSuccessMsg(success)}
-            <form onSubmit={handleSubmit}>
-                <label>Email Address</label>
-                <div className="user-box">
-                    <input type="text" required id="email" name="email"
-                        value={email}
-                        onChange={(e) => { handleChange(e) }}
-                    />
-                </div>
-                <label>Password</label>
-                <div className="user-box">
-                    <input type="text" id="password" required name="password"
-                        value={password}
-                        onChange={(e) => { handleChange(e) }}
-                    />
-                </div>
-                <div className="row">
+            <h2 className="text-center">Login</h2>
 
-                    <button onSubmit={(e) => { handleSubmit(e) }} className="button" type="submit">
-                        Login
-                    </button>
-                    <Link className="forgot" to="/forgot_password">Forgot your password</Link>
-                </div>
-            </form>
-            <p> New user? <Link to="/register/user">Register</Link></p>
+            <div className="form">
+                <form className="form__bottom" onSubmit={handleSubmit}>
+                    <div className="form__item">
+                        <label htmlFor="email">Email</label>
+                        <input type="text" required id="email" name="email"
+                            value={email}
+                            onChange={(e) => { handleChange(e) }}
+                            placeholder="Enter email..."
+                        />
+                    </div>
+                    <div className="form__item">
+                        <label htmlFor="email">Password</label>
+                        <input type="password" id="password" required name="password"
+                            value={password}
+                            onChange={(e) => { handleChange(e) }}
+                        />
+                    </div>
+                    <div className="missPass">
+                        <Link to="/forgot_password"><span>Quên mật khẩu ?</span></Link>
+                    </div>
+                    <div className="form__item">
+                        <button onSubmit={(e) => { handleSubmit(e) }} className="btn-submit" type="submit">Đăng nhập</button>
+                    </div>
+                </form>
+            </div>
         </div>
     )
 }

@@ -75,7 +75,7 @@ export default function Header() {
           <i className="fa-solid fa-magnifying-glass" />
           <input type="text" placeholder="Tìm kiếm khoá học" />
         </div>
-        <button className={style.header__active}>Kích hoạt khoá học</button>
+        <Link to="/courseOwner" className={style.header__active}>Kích hoạt khoá học</Link>
       </div>
       <div className={style.header__right}>
         <div className={style.header__login}>
@@ -87,21 +87,25 @@ export default function Header() {
                 </div>
                 <span className={style.header__name}>{trainer.name || user.name || admin.name} <i className="fa-solid fa-angle-down" /></span>
                 <ul className={style.header__dropdown}>
-                  <li><Link to={isUser && '/profile/user' || isTrainer && '/profile/trainer' || isAdmin && '/profile/admin'}><i class="fa-solid fa-user"></i> Thông tin cá nhân</Link> </li>
+                  <li><Link to={isUser && '/profile/user' || isTrainer && '/profile/trainer' || isAdmin && '/admin/profile'}><i className="fa-solid fa-user"></i> Thông tin cá nhân</Link> </li>
                   {isUser && <li><Link to='/courseOwner' > <i className="fa fa-book" /> Khóa học</Link></li>}
-                  {isUser && <li><Link to='/favorite' ><i class="fa-solid fa-heart"></i> Yêu thích</Link></li>}
+                  {isUser && <li><Link to='/favorite' ><i className="fa-solid fa-heart"></i> Yêu thích</Link></li>}
                   {isUser && <li><Link to='/discovery' > <i className="fa fa-search-plus" /> Khám phá</Link></li>}
                   {isUser && <li><Link to='/checkBody' > <i className="fa fa-plus" /> Kiểm tra sức khỏe</Link></li>}
-                  <li><Link to='/messenger' > <i class="fa-brands fa-facebook-messenger"></i> {isUser && "Trò chuyện với giảng viên" || isTrainer && "Hỗ trợ học viên"}</Link></li>
-                  {isTrainer && <li><Link to='/tutorial' > <i class="fa-solid fa-list-check"></i> Quản lý các khóa học</Link></li>}
-                  {isTrainer && <li><Link to='/courses' > <i class="fa-solid fa-chart-line"></i> Dashboard</Link></li>}
+                  {!isAdmin && <li><Link to='/messenger' > <i className="fa-brands fa-facebook-messenger"></i> {isUser && "Trò chuyện với giảng viên" || isTrainer && "Hỗ trợ học viên"}</Link></li>}
+                  {isAdmin && <li><Link to='/admin/managerTrainer' > <i className="fa-solid fa-users"></i> Quản lý các giảng viên</Link></li>}
+                  {isAdmin && <li><Link to='/admin/managerUser' > <i className="fa-solid fa-user-graduate"></i> Quản lý các học viên</Link></li>}
+                  {isAdmin && <li><Link to='/admin/managerCate' > <i className="fa-solid fa-calendar"></i> Quản lý các danh mục</Link></li>}
+                  {isAdmin && <li><Link to='/admin/dashboard' > <i className="fa-solid fa-chart-line"></i> Dashboard</Link></li>}
+                  {isTrainer && <li><Link to='/tutorial' > <i className="fa-solid fa-list-check"></i> Quản lý các khóa học</Link></li>}
+                  {isTrainer && <li><Link to='/courses' > <i className="fa-solid fa-chart-line"></i> Dashboard</Link></li>}
                   <li><Link to='/' onClick={() => { handleLogout() }}> <i className="fa-solid fa-power-off" /> Đăng xuất</Link></li>
                 </ul>
               </div>
               :
               <>
                 <Link to="/login"><button className={style["header__login--button"]}>Đăng nhập</button></Link>
-                <button className={`${style["header__login--button"]} ${style["header__login--border"]}`}>Đăng ký</button>
+                <Link to="/register" className={`${style["header__login--button"]} ${style["header__login--border"]}`}>Đăng ký</Link>
               </>
           }
         </div>

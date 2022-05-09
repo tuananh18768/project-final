@@ -29,7 +29,7 @@ export default function TutorialManager() {
     const [category, setCategory] = useState()
     const [arrayResult, setArrayResult] = useState([])
 
-    const { name,description, avatar_couses, error, success } = dataTutorial
+    const { name, description, avatar_couses, error, success } = dataTutorial
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -60,7 +60,7 @@ export default function TutorialManager() {
             return
         }
         try {
-            const res = await axios.post('/trainer/add_toturial', { name,description, avatar_couses, category, result: arrayResult }, { headers: { Authorization: tokenTrainer } })
+            const res = await axios.post('/trainer/add_toturial', { name, description, avatar_couses, category, result: arrayResult }, { headers: { Authorization: tokenTrainer } })
             Swal.fire({
                 title: 'success!',
                 html: res.data.msg,
@@ -73,15 +73,15 @@ export default function TutorialManager() {
             })
         } catch (error) {
             Swal.fire({
-                        title: 'Error!',
-                        html: error.response.data.msg,
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    }).then(confirm => {
-                        if (confirm.isConfirmed) {
-                            window.location.href = "/tutorial"
-                        }
-                    })
+                title: 'Error!',
+                html: error.response.data.msg,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            }).then(confirm => {
+                if (confirm.isConfirmed) {
+                    window.location.href = "/tutorial"
+                }
+            })
         }
     }
     const handleChangeUpdate = (id) => {
@@ -102,7 +102,7 @@ export default function TutorialManager() {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const res = await axios.put(`/trainer/update_tutorial/${id}`, { name,description, avatar_couses, category, result: arrayResult }, { headers: { Authorization: tokenTrainer } })
+                    const res = await axios.put(`/trainer/update_tutorial/${id}`, { name, description, avatar_couses, category, result: arrayResult }, { headers: { Authorization: tokenTrainer } })
                     Swal.fire(res.data.msg, '', 'success').then(confirm => {
                         if (confirm.isConfirmed) {
                             window.location.href = "/tutorial"
@@ -193,7 +193,7 @@ export default function TutorialManager() {
                         </form>
                         <button type="button" className="btn btn-info mb-2" data-toggle="modal" data-target="#exampleModal">Create</button>
                     </div>
-                    <div className="mt-4 tbl border border-info">
+                    <div className="mt-4 tbl border border-info table-responsive">
                         <table className="table table-bordered table-hover ">
                             <thead>
                                 <tr>
@@ -253,7 +253,7 @@ export default function TutorialManager() {
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="cat">Description</label>
-                                        <textarea type="text" style={{height: 200 }} placeholder="Enter description..." name="description" onChange={handleChange} className="form-control" id="cat" />
+                                        <textarea type="text" style={{ height: 200 }} placeholder="Enter description..." name="description" onChange={handleChange} className="form-control" id="cat" />
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="cat">Avatar</label>
@@ -301,7 +301,7 @@ export default function TutorialManager() {
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="cat">Description</label>
-                                        <textarea type="text" style={{height: 200}} placeholder="Enter description..." name="description" defaultValue={description} onChange={handleChange} className="form-control" id="cat" />
+                                        <textarea type="text" style={{ height: 200 }} placeholder="Enter description..." name="description" defaultValue={description} onChange={handleChange} className="form-control" id="cat" />
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="cat">Avatar</label>

@@ -37,4 +37,6 @@ router.get("/allUser/:userId", uploadController.getAllUser);
 
 router.get("/friend/:userId", uploadController.getFriendFlow);
 
+router.get("/getallTrainer", uploadController.getAllTrainers);
+
 module.exports = router;

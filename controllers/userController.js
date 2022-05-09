@@ -11,6 +11,14 @@ const RegisterModel = require("../models/registerCourseModel");
 const Discovery = require("../models/discovery");
 const NewPostDiscovery = require("../models/newPostDiscovery");
 const bmiModel = require("../models/bmiModel");
+const Conversation = require("../models/conversation");
+const Message = require("../models/message");
+
+const { google } = require("googleapis");
+const { OAuth2 } = google.auth;
+const fetch = require("node-fetch");
+
+const client = new OAuth2(process.env.MAILING_SERVICE_CLIENT_ID);
 
 const { CLIENT_URL } = process.env;
 
@@ -198,6 +206,7 @@ const userController = {
                 const flowUser = trainerObj.followings.findIndex(
                     (flow) => flow.toString() === req.user.id.toString()
                 );
+
                 if (flowTrainer === -1) {
                     userObj.followings.push(tutorialParams.trainer_id);
                     userObj.save();
@@ -206,6 +215,13 @@ const userController = {
                     trainerObj.followings.push(req.user.id);
                     trainerObj.save();
                 }
+                const newConversation = new Conversation({
+                    members: [userObj._id.toString(), trainerObj._id.toString()],
+                });
+                console.log(userObj._id.toString());
+                console.log(trainerObj._id.toString());
+                console.log("alo");
+                await newConversation.save();
             } else {
                 return res.status(200).json({ msg: "Tiep tuc hoc" });
             }
@@ -229,6 +245,7 @@ const userController = {
             });
             const courses = await Courses.findOne({ tutorials: tutorialParams._id });
             const ids = req.query.id;
+
             res.status(200).json(courses);
         } catch (error) {
             res.status(500).json({ msg: error.message });
@@ -271,7 +288,15 @@ const userController = {
     getAllTutorial: async(req, res) => {
         try {
             const data = await Tutorial.find();
-            res.status(200).json(data);
+            let dataAll = [];
+            dataAll = await Promise.all(
+                data.map(async(current) => {
+                    const cate = await Categories.findById(current.category);
+                    const trainer = await TrainerModel.findById(current.trainer_id);
+                    return {...current._doc, category: cate.name, trainer_id: trainer };
+                })
+            );
+            res.status(200).json(dataAll);
         } catch (error) {
             return res.status(500).json({ msg: error.message });
         }
@@ -386,12 +411,14 @@ const userController = {
             const userLearn = await Promise.all(
                 tutorial.map(async(course) => {
                     const courses = await Tutorial.findById(course.courses);
+                    const courseObj = await Courses.find({ tutorials: course.courses });
                     return {
                         ...course._doc,
                         nameCourse: courses.name,
                         avatarCourse: courses.avatar_couses,
                         desCourse: courses.description,
                         courseLinkName: courses.linkName,
+                        courseObj,
                     };
                 })
             );
@@ -402,7 +429,7 @@ const userController = {
     },
     addLikeDiscovery: async(req, res) => {
         try {
-            const params = await Discovery.findById(req.params.id);
+            const params = await Categories.findById(req.params.id);
             const user = await Users.findById(req.user.id);
             const likesAble = params.likes_user.findIndex(
                 (like) => like.toString() === user._id.toString()
@@ -422,11 +449,18 @@ const userController = {
     },
     listDiscovery: async(req, res) => {
         try {
-            const discovery = await Discovery.find();
-            const allData = discovery.map((e) => {
-                const userDis = e.likes_user.includes(req.user.id);
-                return {...e._doc, userDis: userDis };
-            });
+            const discovery = await Categories.find();
+            const allData = await Promise.all(
+                discovery.map(async(e) => {
+                    const userDis = e.likes_user.includes(req.user.id);
+                    // const tutorials = await Tutorial.find({ category: e._id });
+                    let tutorials = [];
+                    if (userDis) {
+                        tutorials = await Tutorial.find({ category: e._id });
+                    }
+                    return {...e._doc, userDis: userDis, tutorials: tutorials };
+                })
+            );
             return res.json(allData);
         } catch (error) {
             return res.status(500).json({ msg: error.message });
@@ -471,6 +505,124 @@ const userController = {
                 result,
             };
             res.status(200).json(resultData);
+        } catch (error) {
+            res.status(500).json({ msg: error.message });
+        }
+    },
+    deleteChat: async(req, res) => {
+        try {
+            await Conversation.findByIdAndDelete(req.params.id);
+            const message = await Message.find();
+            for (let item of message) {
+                if (item.conversationId.toString() === req.params.id) {
+                    await Message.findByIdAndDelete(item._id);
+                }
+            }
+            res.json({ msg: "Delete chat successfully" });
+        } catch (error) {
+            res.status(500).json({ msg: error.message });
+        }
+    },
+    googleLogin: async(req, res) => {
+        try {
+            const { tokenId } = req.body;
+
+            const verify = await client.verifyIdToken({
+                idToken: tokenId,
+                audience: process.env.MAILING_SERVICE_CLIENT_ID,
+            });
+
+            const { email_verified, email, name, picture } = verify.payload;
+
+            const password = email + process.env.GOOGLE_SECRET;
+
+            const passwordHash = await bcrypt.hash(password, 12);
+
+            if (!email_verified)
+                return res.status(400).json({ msg: "Email verify failed!!!" });
+
+            const user = await Users.findOne({ email });
+
+            if (user) {
+                const isMatch = await bcrypt.compare(password, user.password);
+                if (!isMatch)
+                    return res.status(400).json({ msg: "Password is incorrect!!!" });
+
+                const refresh_token = createRefreshToken({ id: user._id });
+                res.cookie("refreshtoken", refresh_token, {
+                    httpOnly: true,
+                    path: "/user/refresh_token",
+                    maxAge: 7 * 24 * 60 * 60 * 100, //7day
+                });
+                res.json({ msg: "Login success" });
+            } else {
+                const newUser = new Users({
+                    name,
+                    email,
+                    password: passwordHash,
+                    avatar: picture,
+                });
+                await newUser.save();
+                const refresh_token = createRefreshToken({ id: newUser._id });
+                res.cookie("refreshtoken", refresh_token, {
+                    httpOnly: true,
+                    path: "/user/refresh_token",
+                    maxAge: 7 * 24 * 60 * 60 * 100, //7day
+                });
+                res.json({ msg: "Login success" });
+            }
+        } catch (error) {
+            res.status(500).json({ msg: error.message });
+        }
+    },
+    facebookLogin: async(req, res) => {
+        try {
+            const { accessToken, userID } = req.body;
+
+            const URL = `https://graph.facebook.com/v4.0/${userID}/?fields=id,name,email,picture&access_token=${accessToken}`;
+
+            const data = await fetch(URL)
+                .then((res) => res.json())
+                .then((res) => {
+                    return res;
+                });
+
+            const { email, name, picture } = data;
+
+            const password = email + process.env.FACEBOOK_SECRET;
+
+            const passwordHash = await bcrypt.hash(password, 12);
+
+            const user = await Users.findOne({ email });
+
+            if (user) {
+                const isMatch = await bcrypt.compare(password, user.password);
+                if (!isMatch)
+                    return res.status(400).json({ msg: "Password is incorrect!!!" });
+
+                const refresh_token = createRefreshToken({ id: user._id });
+                res.cookie("refreshtoken", refresh_token, {
+                    httpOnly: true,
+                    path: "/user/refresh_token",
+                    maxAge: 7 * 24 * 60 * 60 * 100, //7day
+                });
+                res.json({ msg: "Login success" });
+            } else {
+                const newUser = new Users({
+                    name,
+                    email,
+                    password: passwordHash,
+                    avatar: picture.data.url,
+                });
+                await newUser.save();
+                const refresh_token = createRefreshToken({ id: newUser._id });
+                res.cookie("refreshtoken", refresh_token, {
+                    httpOnly: true,
+                    path: "/user/refresh_token",
+                    maxAge: 7 * 24 * 60 * 60 * 100, //7day
+                });
+                res.json({ msg: "Login success" });
+            }
         } catch (error) {
             res.status(500).json({ msg: error.message });
         }

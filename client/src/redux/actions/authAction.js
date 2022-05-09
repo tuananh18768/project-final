@@ -15,6 +15,10 @@ export const dispatchLoginAdmin = () => {
         type: ACTIONS.LOGIN_ADMIN,
     };
 };
+export const fetchGetAllTrainer = async(token) => {
+    const res = await axios.get("/api/getallTrainer");
+    return res;
+};
 export const fetchUser = async(token) => {
     const res = await axios.get("/user/infor", {
         headers: { Authorization: token },
@@ -29,6 +33,12 @@ export const dispatchGetUser = (res) => {
             isAdmin: res.data.role === 1 ? true : false,
             isUser: res.data.role === 0 ? true : false,
         },
+    };
+};
+export const dispatchGetAllTrainerView = (res) => {
+    return {
+        type: ACTIONS.GET_ALL_TRAINER_VIEW,
+        payload: res.data,
     };
 };
 export const fetchTrainer = async(token) => {

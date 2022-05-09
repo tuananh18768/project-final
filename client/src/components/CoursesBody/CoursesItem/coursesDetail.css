@@ -1,95 +1,159 @@
 .additioninfo span {
-  margin-right: 20px;
+    margin-right: 20px;
 }
 
 .coursed {
-  padding: 20px;
+    padding: 20px;
+    margin-bottom: 100px;
 }
 
 .listlesson {
-  height: 540px;
-  overflow-y: scroll;
-  flex-grow: 1;
+    height: 540px;
+    overflow-y: scroll;
+    flex-grow: 1;
 }
 
 div.video {
-  width: 70%;
+    width: 70%;
 }
 
 .muitab {
-  margin-top: 50px;
+    margin-top: 50px;
 }
 
 .divDL {
-  border-radius: 50%;
-  height: 30px;
-  width: 30px;
-  display: flex;
-  cursor: pointer;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    cursor: pointer;
 }
 
 .divDL i {
-  margin: auto;
+    margin: auto;
 }
 
 .divDL:hover {
-  background-color: #ccc;
+    background-color: #ccc;
 }
 
 .commentItem div {
-  margin-right: 20px;
+    margin-right: 20px;
 }
 
 .commentItem div .imgC {
-  border-radius: 50%;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
 }
 
 .comment-content {
-  background-color: #ccc;
-  border-radius: 10px;
-  padding: 20px;
-  width: 100%;
+    background-color: #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
 }
 
 .listlesson li {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .c1 {
-  display: none;
+    display: none;
 }
 
 .c1 div {
-  padding: 10px;
+    padding: 10px;
 }
 
 .c1 div:hover {
-  background-color: #ccc;
+    background-color: #ccc;
 }
 
 .listlesson li:hover .c1 {
-  display: block;
+    display: block;
 }
 
 .additioninfo i {
-  color: rgb(185, 185, 22);
+    color: rgb(185, 185, 22);
 }
 
 input#vehicle1 {
-  width: 40px;
-  height: 32px;
+    width: 40px;
+    height: 32px;
 }
 
 .videoandlist .video h1 {
-  position: relative;
+    position: relative;
 }
 
 .videoandlist .video h1 input {
-  position: absolute;
-  right: 0;
+    position: absolute;
+    right: 0;
 }
 
 .video_title {
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.div-commentItems {
+    height: 500px;
+    overflow-y: scroll;
+}
+
+.form-inline {
+    align-items: center;
+}
+
+.form-inline i {
+    margin: 0 !important;
+}
+
+#inputPassword2 {
+    width: 980px !important;
+}
+
+.inforTrainer {
+    display: flex;
+    align-items: center;
+}
+
+.inforTrainer img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 120px;
+}
+
+.inforTrainer .skill p {
+    margin-bottom: 10px;
+}
+
+.inforTrainer .skill .name {
+    font-size: 25px;
+    color: yellowgreen;
+}
+
+.finishCourses {
+    background-image: url('https://sweetalert2.github.io/images/nyan-cat.gif');
+    width: 100%;
+    height: 500px;
+    background-color: rgba(0, 0, 123, 0.4);
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.finishCourses img {
+    width: 620px;
+    height: 415px;
+    border-radius: 10px;
+    object-fit: cover;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
 }

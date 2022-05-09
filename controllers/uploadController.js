@@ -88,6 +88,14 @@ const getFriendFlow = async(req, res) => {
         res.status(500).json({ msg: error });
     }
 };
+const getAllTrainers = async(req, res) => {
+    try {
+        const trainers = await Trainer.find().select("-password");
+        res.json(trainers);
+    } catch (err) {
+        return res.status(500).json({ msg: err.message });
+    }
+};
 const removeImg = function(patchFile) {
     fs.unlink(patchFile, (err) => {
         if (err) throw err;
@@ -110,4 +118,5 @@ module.exports = {
     getAllTrainer,
     getAllUser,
     getFriendFlow,
+    getAllTrainers,
 };
